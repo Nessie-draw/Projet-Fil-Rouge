@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-ka1: "Ka1", "Courier New", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html, body, * {
+  font-family: "Courier New", monospace !important;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.pixel-ui,
+.pixel-ui button,
+.pixel-ui input,
+.pixel-ui textarea,
+.pixel-ui select {
+  font-family: "Courier New", monospace;
+  text-rendering: geometricPrecision;
+}
+
+.pixel-ui {
+  background-image: none;
+}
+
+.pixel-brand {
+  text-shadow:
+    1px 0 0 rgb(34 197 94 / 0.55),
+    0 1px 0 rgb(2 6 23 / 0.7);
+}
+
+.octobots-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.octobots-logo-spin {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+  image-rendering: pixelated;
+  animation: octobots-spin-clean 2.2s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.octobots-logo-fallback {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+}
+
+.octobots-logo-dark {
+  background: transparent;
+  box-shadow: none;
+}
+
+.octobots-logo-light {
+  background: transparent;
+  box-shadow: none;
+}
+
+.teleprompter-scroll {
+  animation: teleprompter 18s linear infinite;
+}
+
+@keyframes teleprompter {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes octobots-spin-clean {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pixel-panel {
+  box-shadow:
+    0 0 0 2px rgb(15 23 42 / 0.45),
+    6px 6px 0 rgb(2 6 23 / 0.32);
+}
+
+.pixel-glyph {
+  width: 32px;
+  height: 32px;
+  display: block;
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
+}
+
+.pixel-glyph-dark {
+  color: #e2e8f0;
+  filter: drop-shadow(0 0 1px rgb(148 163 184 / 0.55));
+}
+
+.pixel-glyph-light {
+  color: #0f172a;
+  filter: drop-shadow(0 0 1px rgb(100 116 139 / 0.35));
+}
+
+/* ----- Bracket style schema classique ----- */
+
+.bracket-shell {
+  padding: 0.75rem;
+  background: #020617;
+}
+
+.bracket-inner {
+  margin: 0 auto;
+}
+
+.bracket-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.bracket-canvas {
+  position: relative;
+  background: #020617;
+}
+
+.bracket-round-label {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ----- Qualification panel ----- */
+.bracket-qual-panel {
+  background: #0a0f1a;
+  border: 1px solid #1e293b;
+  border-radius: 4px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.bracket-qual-panel--inactive { opacity: 0.35; }
+
+.bracket-qual-title {
+  font-size: 9px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+.bracket-qual-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 6px;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 2px;
+}
+
+.bracket-qual-rank {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.bracket-qual-rank--top { background: rgba(34,197,94,0.2); color: #22c55e; }
+.bracket-qual-rank--bar { background: rgba(239,68,68,0.2);  color: #ef4444; }
+
+.bracket-qual-name {
+  flex: 1;
+  font-size: 10px;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.bracket-qual-input {
+  width: 48px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.bracket-qual-score {
+  font-size: 9px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.bracket-qual-dest {
+  font-size: 8px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.bracket-qual-dest--demi    { color: #22c55e; }
+.bracket-qual-dest--barrage { color: #ef4444; }
+
+.bracket-qual-btn {
+  margin-top: 4px;
+  width: 100%;
+  padding: 5px;
+  background: #1d4ed8;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.bracket-qual-btn:hover { background: #2563eb; }
+
+.bracket-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bracket-line-path {
+  fill: none;
+  stroke: #475569;
+  stroke-width: 1.5;
+}
+
+.bracket-node {
+  position: absolute;
+  z-index: 2;
+}
+
+.bracket-card {
+  width: 150px;
+  border: 1px solid #334155;
+  border-radius: 0;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.bracket-team-row {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  font-size: 10px;
+  line-height: 1;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.bracket-team-row:hover:not(.bracket-team-winner):not(.bracket-team-loser) {
+  background: #1e293b;
+}
+
+.bracket-team-winner {
+  background: rgba(34, 197, 94, 0.2) !important;
+  color: #86efac;
+  font-weight: 700;
+}
+
+.bracket-team-loser {
+  background: rgba(51, 65, 85, 0.5) !important;
+  color: #475569;
+}
+
+.bracket-bye {
+  color: #1e293b;
+  cursor: not-allowed !important;
+  background: #0a0f1a;
+}
+
+.bracket-badge {
+  font-size: 8px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-left: 5px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  line-height: 1.4;
+}
+
+.bracket-badge--v {
+  background: #16a34a;
+  color: #dcfce7;
+}
+
+.bracket-badge--d {
+  background: #334155;
+  color: #94a3b8;
+}
+
+.bracket-vainqueur {
+  width: 150px;
+  height: 44px;
+  border: 1px dashed #334155;
+  background: #0a0f1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #334155;
+  text-align: center;
+  font-style: italic;
+}
+
+.bracket-vainqueur--won {
+  border: 2px solid #22c55e;
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 11px;
+}
