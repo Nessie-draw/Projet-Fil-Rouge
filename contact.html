@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacts</title>
+  <!-- Style commun à toutes les pages, puis style propre aux contacts -->
+  <link rel="stylesheet" href="conversation.css">
+  <link rel="stylesheet" href="contact.css">
+  <!-- Icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<!-- "sans-liste" = une seule colonne -->
+<body class="sans-liste">
+
+  <!-- En-tête identique aux autres pages -->
+  <header>
+    <div class="titre">
+      <img src="logo-dark-big.webp" alt="Logo Octobots" class="logo-petit">
+      <h1>Messagerie Octobots</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="conversation.html"><i class="fa-solid fa-comments"></i> Conversations</a></li>
+        <li><a href="contact.html" aria-current="page"><i class="fa-solid fa-user-group"></i> Contacts</a></li>
+        <li><a href="faq.html"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+        <li><a href="parametre.html"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+      </ul>
+      <button id="bouton-theme" class="bouton-theme" type="button" aria-label="Changer de thème">
+        <i class="fa-solid fa-circle-half-stroke"></i>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Contacts</h2>
+
+    <!-- Haut de la page : chercher et inviter, côte à côte -->
+    <div class="contacts-haut">
+      <search class="bloc">
+        <h3>Chercher</h3>
+        <form class="ligne-form" id="form-chercher">
+          <!-- Étiquette cachée à l'écran mais lue par les lecteurs d'écran -->
+          <label for="chercher" class="cache-visuel">Chercher un contact</label>
+          <input type="search" id="chercher" placeholder="Nom du contact…">
+        </form>
+      </search>
+
+      <section class="bloc">
+        <h3>Inviter un contact</h3>
+        <form class="ligne-form" id="form-inviter">
+          <label for="nomcontact" class="cache-visuel">Nom du contact à inviter</label>
+          <input type="text" id="nomcontact" placeholder="Nom du contact" required>
+          <button type="submit"><i class="fa-solid fa-user-plus"></i> Inviter</button>
+        </form>
+      </section>
+    </div>
+
+    <!-- Les trois listes de personnes -->
+    <div class="contacts-listes">
+      <section class="bloc">
+        <h3>Invitations reçues</h3>
+        <ul class="liste-personnes" id="recues">
+          <li>
+            <span class="nom">Julie Bouchard</span>
+            <span class="actions">
+              <button type="button" class="btn-petit" data-action="accepter">Accepter</button>
+              <button type="button" class="btn-petit danger" data-action="refuser">Refuser</button>
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="bloc">
+        <h3>Invitations envoyées</h3>
+        <ul class="liste-personnes" id="envoyees">
+          <li>
+            <span class="nom">Karim Haddad</span>
+            <span class="actions">
+              <button type="button" class="btn-petit danger" data-action="annuler">Annuler</button>
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="bloc">
+        <h3>Mes contacts</h3>
+        <ul class="liste-personnes" id="contacts">
+          <li>
+            <span class="nom">Léa Tremblay</span>
+            <span class="actions">
+              <button type="button" class="btn-petit danger" data-action="supprimer">Supprimer</button>
+            </span>
+          </li>
+          <li>
+            <span class="nom">Marc Gagnon</span>
+            <span class="actions">
+              <button type="button" class="btn-petit danger" data-action="supprimer">Supprimer</button>
+            </span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Invitations, suppression et recherche -->
+  <script src="contact.js"></script>
+  <!-- Thème clair / sombre -->
+  <script src="theme.js"></script>
+</body>
+</html>

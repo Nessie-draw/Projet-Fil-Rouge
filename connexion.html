@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)file:///C:/Users/annes/OneDrive/Documents/Fil-Rouge/index.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion</title>
+  <link rel="stylesheet" href="./Connexion_files/style.css">
+  <!-- Icônes (bouton de thème et réseaux sociaux) -->
+  <link rel="stylesheet" href="./Connexion_files/all.min.css">
+</head>
+<body>
+  <!-- Bouton pour passer du thème sombre au thème clair -->
+  <button id="bouton-theme" class="bouton-theme" type="button" aria-label="Changer de thème">
+    <i class="fa-solid fa-circle-half-stroke"></i>
+  </button>
+
+  <main class="wrapper">
+    <!-- Logo du club -->
+    <img src="./Connexion_files/logo-dark-big.webp" alt="Logo Octobots" class="logo">
+
+    <!-- Formulaire de connexion -->
+    <form class="login" action="file:///C:/Users/annes/OneDrive/Documents/Fil-Rouge/conversation.html">
+      <h1>Connexion</h1>
+      <label for="courriel">Adresse courriel</label>
+      <input type="email" id="courriel" required="">
+      <label for="motdepasse">Mot de passe</label>
+      <input type="password" id="motdepasse" required="">
+      <button type="submit">Se connecter</button>
+      <p class="register-link">Pas de compte ? <a href="file:///C:/Users/annes/OneDrive/Documents/Fil-Rouge/index.html#">Inscription</a></p>
+    </form>
+
+    <!-- Formulaire d'inscription (caché au début) -->
+    <form class="register" action="file:///C:/Users/annes/OneDrive/Documents/Fil-Rouge/conversation.html">
+      <h1>Inscription</h1>
+      <label for="nom">Nom</label>
+      <input type="text" id="nom" required="">
+      <label for="courriel-inscription">Adresse courriel</label>
+      <input type="email" id="courriel-inscription" required="">
+      <label for="motdepasse-inscription">Mot de passe</label>
+      <input type="password" id="motdepasse-inscription" required="">
+      <button type="submit">S'inscrire</button>
+
+      <p class="login-link">Déjà un compte ? <a href="file:///C:/Users/annes/OneDrive/Documents/Fil-Rouge/index.html#">Connexion</a></p>
+    </form>
+  </main>
+
+  <!-- Bas de page : réseaux sociaux + droits -->
+<footer class="reseaux">
+  <div class="icones">
+    <a href="https://www.facebook.com/share/14ZexcTKDPQ/?mibextid=wwXIfr" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+    <a href="https://www.instagram.com/cruqac_robotique?igsh=MWo3NmRxZTRjem9hMw==" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.linkedin.com/in/club-de-robotique-cruqac-94ab29385?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_ios" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="mailto:clubrobotuqac@gmail.com" aria-label="Courriel"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://youtube.com/@cruqac?si=DxKoucBYjS6de_yB" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a><br>
+  </div>
+  <p class="droits">© 2026 OCTOBOTS-CRUQAC</p>
+</footer>
+
+  <!-- Bascule connexion / inscription -->
+  <script src="./Connexion_files/index.js"></script>
+  <!-- Thème clair / sombre -->
+  <script src="./Connexion_files/theme.js"></script>
+
+</body></html>

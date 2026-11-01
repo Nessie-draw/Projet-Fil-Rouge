@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conversations</title>
+  <link rel="stylesheet" href="conversation.css">
+  <!-- Icônes (bouton de thème) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- En-tête : logo + titre à gauche, menu + bouton de thème à droite -->
+  <header>
+    <div class="titre">
+      <img src="logo-dark-big.webp" alt="Logo Octobots" class="logo-petit">
+      <h1>Messagerie Octobots</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="conversation.html" aria-current="page"><i class="fa-solid fa-comments"></i>Conversations</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-user-group"></i>Contacts</a></li>
+        <li><a href="faq.html"><i class="fa-solid fa-circle-question"></i>FAQ</a></li>
+        <li><a href="parametre.html"><i class="fa-solid fa-gear"></i>Paramètres</a></li>
+      </ul>
+      <button id="bouton-theme" class="bouton-theme" type="button" aria-label="Changer de thème">
+        <i class="fa-solid fa-circle-half-stroke"></i>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Colonne de gauche : liste des conversations -->
+  <aside>
+    <h2>Messages</h2>
+    <button class="btn-nouvelle" type="button">+ Nouvelle conversation</button>
+    <ul class="liste-conversations">
+      <li>
+        <a href="#" class="conv-active">
+          <span class="avatar">LT</span>
+          <span>
+            <strong>Léa Tremblay</strong>
+            <span class="apercu">Oui, j'apporte le circuit…</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <span class="avatar">ÉR</span>
+          <span>
+            <strong>Équipe robot 2026</strong>
+            <span class="apercu">Réunion jeudi à 17 h</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <span class="avatar">MG</span>
+          <span>
+            <strong>Marc Gagnon</strong>
+            <span class="apercu">Merci !</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Zone principale : la conversation ouverte -->
+  <main>
+    <!-- Personne avec qui on parle -->
+    <div class="entete-conv">
+      <span class="avatar">LT</span>
+      <h2>Léa Tremblay</h2>
+    </div>
+
+    <!-- Liste des messages -->
+    <ol class="messages">
+      <!-- Date centrée, comme sur Instagram -->
+      <li class="separateur-date">Aujourd'hui, 14 h 02</li>
+
+      <!-- Message reçu (bulle à gauche) -->
+      <li>
+        <article>
+          <strong>Léa Tremblay</strong>
+          <p>Salut ! Tu viens à l'atelier jeudi ?</p>
+          <time>14 h 02</time>
+        </article>
+      </li>
+
+      <!-- Message envoyé (bulle à droite) -->
+      <li class="envoye">
+        <article>
+          <strong>Moi</strong>
+          <p>Oui, j'apporte le circuit du bras robotique.</p>
+          <time>14 h 05</time>
+        </article>
+      </li>
+    </ol>
+
+    <!-- Champ arrondi pour écrire un message -->
+    <form class="envoi">
+      <input type="text" id="message" aria-label="Votre message" placeholder="Votre message…" required>
+      <button type="submit">Envoyer</button>
+    </form>
+  </main>
+
+  <!-- Envoi des messages -->
+  <script src="conversation.js"></script>
+  <!-- Thème clair / sombre (le même fichier que sur la page de connexion) -->
+  <script src="theme.js"></script>
+</body>
+</html>

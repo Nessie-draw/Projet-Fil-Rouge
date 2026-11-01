@@ -1,0 +1,314 @@
+/* Enlève les marges par défaut et choisit la police */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", monospace;
+}
+
+/* Page : en-tête en haut, liste à gauche, conversation à droite */
+body {
+  background-color: #050816;
+  color: #c8d0e0;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr; /* en-tête à sa taille, le reste prend toute la place */
+  gap: 15px;
+  min-height: 100vh;
+}
+
+/* Pages avec une seule colonne (contacts, FAQ, paramètres) */
+.sans-liste {
+  grid-template-columns: 1fr;
+}
+
+/* ===== En-tête ===== */
+header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #1f2a44;
+}
+
+/* Logo + titre côte à côte */
+.titre {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-petit {
+  width: 50px;
+}
+
+h1 {
+  color: #2ecc71;
+  font-size: 22px;
+}
+
+/* Menu + bouton de thème sur une ligne */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+a {
+  color: #8fd8ea;
+}
+
+/* Lien de la page où on est */
+nav a[aria-current="page"] {
+  color: #2ecc71;
+}
+
+/* ===== Éléments communs à toutes les pages ===== */
+button {
+  padding: 8px 12px;
+  background-color: transparent;
+  border: 1px solid #8fd8ea;
+  color: #8fd8ea;
+  cursor: pointer;
+}
+
+input {
+  padding: 8px;
+  background-color: #050816;
+  border: 1px solid #1f2a44;
+  color: #c8d0e0;
+}
+
+/* Cadres (utilisés dans contacts, FAQ, paramètres) */
+.bloc,details {
+  border: 1px solid #1f2a44;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+/* Boutons rouges (supprimer, refuser) */
+.btn-danger {
+  border-color: #ff5c5c;
+  color: #ff5c5c;
+}
+
+/* ===== Avatar rond avec initiales ===== */
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%; /* 50 % = cercle parfait */
+  background-color: #1f2a44;
+  color: #8fd8ea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  flex-shrink: 0; /* l'avatar ne s'écrase pas si le nom est long */
+}
+
+/* ===== Colonne de gauche : liste des conversations ===== */
+aside {
+  border-right: 1px solid #1f2a44;
+  padding-right: 15px;
+}
+
+aside h2 {
+  margin-bottom: 15px;
+}
+
+.btn-nouvelle {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.liste-conversations {
+  list-style: none;
+}
+
+/* Chaque conversation : avatar à gauche, nom + aperçu à droite */
+.liste-conversations a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #c8d0e0;
+}
+
+/* Survol et conversation ouverte : fond légèrement plus clair */
+.liste-conversations a:hover,
+.conv-active {
+  background-color: #0b1222;
+}
+
+/* Aperçu du dernier message, plus petit et plus pâle */
+.apercu {
+  display: block;
+  font-size: 12px;
+  color: #7a8499;
+}
+
+/* ===== Zone de conversation ===== */
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+/* En-tête de la conversation : avatar + nom */
+.entete-conv {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #1f2a44;
+}
+
+/* Liste des messages : défile au lieu d'allonger la page */
+.messages {
+  list-style: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px 0;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.messages li {
+  display: flex;
+}
+
+/* Date centrée entre les messages */
+.separateur-date {
+  justify-content: center;
+  font-size: 12px;
+  color: #7a8499;
+  margin: 10px 0;
+}
+
+/* Bulle de message reçu : grise, à gauche */
+.messages article {
+  background-color: #1f2a44;
+  padding: 8px 14px;
+  border-radius: 20px;
+  max-width: 70%;
+}
+
+/* Le nom est caché : dans une conversation à deux, on sait qui parle */
+.messages strong {
+  display: none;
+}
+
+/* Heure en petit sous le message */
+.messages time {
+  display: block;
+  font-size: 11px;
+  color: #7a8499;
+  margin-top: 2px;
+}
+
+/* Message envoyé : bulle bleue, à droite */
+.envoye {
+  justify-content: flex-end;
+}
+
+.envoye article {
+  background-color: #2a6fdb;
+  color: #ffffff;
+}
+
+.envoye time {
+  color: #d6e4ff;
+}
+
+/* ===== Champ d'écriture arrondi ===== */
+.envoi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #1f2a44;
+  border-radius: 25px;
+  padding: 6px 6px 6px 16px;
+}
+
+/* Le champ prend toute la place, sans bordure (c'est le formulaire qui a la bordure) */
+.envoi input {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+/* « Envoyer » en texte, comme sur Instagram */
+.envoi button {
+  border: none;
+  font-weight: bold;
+}
+
+/* Bouton de thème */
+.bouton-theme {
+  padding: 6px 10px;
+}
+
+/* ===== Thème clair : fond gris clair, accents bleu marine ===== */
+body.clair {
+  background-color: #e9ebef;
+  color: #2b2f5e;
+}
+
+body.clair h1,body.clair nav a[aria-current="page"] {
+  color: #2b2f77;
+}
+
+body.clair a,body.clair button {
+  color: #2b2f77;
+  border-color: #2b2f77;
+}
+
+body.clair .liste-conversations a {
+  color: #2b2f5e;
+}
+
+body.clair .liste-conversations a:hover,body.clair .conv-active {
+  background-color: #d8dbe3;
+}
+
+body.clair .avatar,body.clair .messages article {
+  background-color: #d8dbe3;
+  color: #2b2f5e;
+}
+
+body.clair .envoye article {
+  background-color: #2b2f77;
+  color: #ffffff;
+}
+
+body.clair input {
+  color: #2b2f5e;
+}
+
+/* ===== Téléphone (écran de 700px ou moins) : une seule colonne ===== */
+@media (max-width: 700px) {
+  body {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+  header,
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+  aside {
+    border-right: none;
+  }
+}
