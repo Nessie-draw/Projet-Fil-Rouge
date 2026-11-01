@@ -1,0 +1,122 @@
+/* Couleurs utilisées dans cette page */
+:root {
+  --fond: #050816;
+  --panneau: #0b1222;
+  --bordure: #1f2a44;
+  --vert: #2ecc71;
+  --cyan: #8fd8ea;
+  --rouge: #ff5c5c;
+}
+
+/* Largeur limitée et centrée, comme la FAQ */
+main {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+main h2 {
+  margin-bottom: 20px;
+}
+
+/* « Chercher » et « Inviter » côte à côte */
+.contacts-haut {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Titres de section en petites majuscules espacées, comme cruqac.ca */
+.bloc h3 {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--vert);
+  margin-bottom: 12px;
+}
+
+/* Champ + bouton sur une ligne, le champ prend toute la place */
+.ligne-form {
+  display: flex;
+  gap: 10px;
+}
+
+.ligne-form input {
+  flex: 1;
+}
+
+/* Étiquette cachée à l'écran mais lue par les lecteurs d'écran (accessibilité) */
+.cache-visuel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Listes de personnes : nom à gauche, boutons à droite */
+.liste-personnes {
+  list-style: none;
+}
+
+.liste-personnes li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bordure);
+}
+
+/* Pas de ligne sous la dernière personne */
+.liste-personnes li:last-child {
+  border-bottom: none;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-petit {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+/* Actions destructrices en rouge (refuser, annuler, supprimer) */
+.danger {
+  border-color: var(--rouge);
+  color: var(--rouge);
+}
+
+.danger:hover {
+  background-color: var(--rouge);
+  color: var(--fond);
+}
+
+/* ===== Thème clair ===== */
+body.clair .bloc {
+  background-color: #f5f6f8;
+  border-color: #9aa0b8;
+}
+
+body.clair .bloc h3 {
+  color: #2b2f77;
+}
+
+body.clair .liste-personnes li {
+  border-color: #c8cdd8;
+}
+
+/* Rouge plus foncé, lisible sur fond clair */
+body.clair .danger {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+/* ===== Téléphone : « Chercher » et « Inviter » l'un sous l'autre ===== */
+@media (max-width: 700px) {
+  .contacts-haut {
+    grid-template-columns: 1fr;
+  }
+}

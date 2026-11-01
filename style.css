@@ -1,0 +1,182 @@
+/* Enlève les marges par défaut et choisit la police */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", monospace;
+}
+
+/* Page foncée, formulaire centré au milieu de l'écran */
+body {
+  background-color: #050816;
+  color: #c8d0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Logo en haut à gauche */
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 150px;
+}
+
+/* Boîte du formulaire */
+form {
+  width: 400px;
+  max-width: 100%;
+  background-color: #0b1222;
+  border: 1px solid #1f2a44;
+  padding: 30px;
+}
+
+/* Titre vert centré */
+h1 {
+  text-align: center;
+  color: #2ecc71;
+  margin-bottom: 25px;
+}
+
+/* Étiquette au-dessus de chaque champ */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+/* Champs de texte */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  background-color: #050816;
+  border: 1px solid #1f2a44;
+  color: #c8d0e0;
+}
+
+/* Champ sélectionné : bordure bleue */
+input:focus {
+  border-color: #8fd8ea;
+  outline: none;
+}
+
+/* Bouton pleine largeur */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  border: 1px solid #8fd8ea;
+  color: #8fd8ea;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Bouton rempli au survol de la souris */
+button:hover {
+  background-color: #8fd8ea;
+  color: #050816;
+}
+
+/* Liens « Inscription » et « Connexion » en bas */
+.register-link,
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+}
+
+.register-link a,
+.login-link a {
+  color: #2ecc71;
+}
+
+/* Au début : inscription cachée */
+.register {
+  display: none;
+}
+
+/* Quand on clique sur « Inscription », le JS ajoute .active :
+   la connexion se cache et l'inscription apparaît */
+.wrapper.active .login {
+  display: none;
+}
+
+.wrapper.active .register {
+  display: block;
+}
+
+/* Bas de page : icônes au-dessus, texte des droits en dessous */
+.reseaux {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icônes des réseaux sur une ligne */
+.icones {
+  display: flex;
+  gap: 20px;
+  font-size: 22px;
+}
+
+.reseaux a {
+  color: #8fd8ea;
+}
+
+/* Petit texte « © 2026 OCTOBOTS-CRUQAC » */
+.droits {
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+/* Bouton du thème en haut à droite */
+.bouton-theme {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: auto; /* sinon il prendrait toute la largeur, comme les autres boutons */
+  padding: 8px 12px;
+}
+
+/* ===== Thème clair (comme cruqac.ca) : fond gris clair, accents bleu marine ===== */
+body.clair {
+  background-color: #e9ebef;
+  color: #2b2f5e;
+}
+
+body.clair form {
+  background-color: #f5f6f8;
+  border-color: #2b2f77;
+}
+
+body.clair input {
+  background-color: #ffffff;
+  border-color: #9aa0b8;
+  color: #2b2f5e;
+}
+
+/* Le vert du thème sombre devient bleu marine */
+body.clair h1,
+body.clair .register-link a,
+body.clair .login-link a {
+  color: #2b2f77;
+}
+
+/* Boutons et icônes en bleu marine */
+body.clair button,
+body.clair .reseaux a {
+  border-color: #2b2f77;
+  color: #2b2f77;
+}
+
+body.clair button:hover {
+  background-color: #2b2f77;
+  color: #ffffff;
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ</title>
+  <!-- Style commun à toutes les pages, puis style propre à la FAQ -->
+  <link rel="stylesheet" href="conversation.css">
+  <link rel="stylesheet" href="faq.css">
+  <!-- Icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<!-- "sans-liste" = une seule colonne, pas de liste de conversations -->
+<body class="sans-liste">
+
+  <!-- En-tête identique à la page Conversations -->
+  <header>
+    <div class="titre">
+      <img src="logo-dark-big.webp" alt="Logo Octobots" class="logo-petit">
+      <h1>Messagerie Octobots</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="conversation.html"><i class="fa-solid fa-comments"></i> Conversations</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-user-group"></i> Contacts</a></li>
+        <li><a href="faq.html" aria-current="page"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+        <li><a href="parametre.html"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+      </ul>
+      <button id="bouton-theme" class="bouton-theme" type="button" aria-label="Changer de thème">
+        <i class="fa-solid fa-circle-half-stroke"></i>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Questions fréquentes</h2>
+
+    <!-- Recherche : l'étiquette est cachée à l'écran mais lue par les lecteurs d'écran -->
+    <search class="recherche-faq">
+      <label for="recherche">Chercher une question</label>
+      <input type="search" id="recherche" placeholder="Chercher une question…">
+    </search>
+
+    <!-- Catégorie : le club -->
+    <section class="faq-groupe">
+      <h3>Le club</h3>
+
+      <details>
+        <summary>Comment devenir membre du club ?</summary>
+        <p>Présentez-vous à une rencontre du club ou écrivez à un responsable via la messagerie.</p>
+      </details>
+
+      <details>
+        <summary>Faut-il savoir programmer pour participer ?</summary>
+        <p>Non. Le club offre des formations où les débutants apprennent à construire leur premier robot.</p>
+      </details>
+
+      <details>
+        <summary>C'est quoi un combat de style sumo ?</summary>
+        <p>Deux robots s'affrontent dans une arène : le but est de pousser l'adversaire hors du cercle, sans chercher à le détruire.</p>
+      </details>
+    </section>
+
+    <!-- Catégorie : la messagerie -->
+    <section class="faq-groupe">
+      <h3>La messagerie</h3>
+
+      <details>
+        <summary>Comment ajouter un contact ?</summary>
+        <ol>
+          <li>Ouvrez la page <a href="contact.html">Contacts</a>.</li>
+          <li>Écrivez le nom du membre dans « Nom du contact ».</li>
+          <li>Cliquez sur <kbd>Inviter</kbd>.</li>
+          <li>Le contact apparaît dans votre liste quand la personne accepte votre invitation.</li>
+        </ol>
+      </details>
+
+      <details>
+        <summary>J'ai oublié mon mot de passe, que faire ?</summary>
+      <p>Écrivez au club par <a href="mailto:adresse-du-club@exemple.com">courriel</a> : un responsable pourra réinitialiser votre accès.</p>
+      </details>
+
+      <details>
+        <summary>Puis-je supprimer mon compte ?</summary>
+        <p>Oui, en faisant la demande à un responsable du club par la messagerie.</p>
+      </details>
+    </section>
+
+    <!-- Affiché seulement quand la recherche ne trouve rien -->
+    <p class="aucun-resultat" hidden>Aucune question ne correspond à votre recherche.</p>
+
+    <!-- Contact humain si la FAQ ne suffit pas -->
+    <aside class="aide">
+      <h2>Vous n'avez pas trouvé votre réponse ?</h2>
+      <p>Écrivez directement à un responsable du club.</p>
+      <a href="conversation.html" class="btn-contact"><i class="fa-solid fa-paper-plane"></i> Envoyer un message</a>
+    </aside>
+  </main>
+
+  <!-- Recherche dans la FAQ -->
+  <script src="faq.js"></script>
+  <!-- Thème clair / sombre -->
+  <script src="theme.js"></script>
+</body>
+</html>
