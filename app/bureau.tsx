@@ -523,6 +523,7 @@ function MainWindow({
           <WindowIcon label="streaming" iconKey="link" onClick={() => openWindow("liens")} isDark={isDark} isOpen={openWindowIds.includes("liens")} imgDark="/images/Dark Stream.webp" imgLight="/images/Light Stream.webp" imgClicking="/images/Clicking Stream.webp" imgClicked="/images/Clicked Stream.webp" />
           <WindowIcon label="Remerciements" iconKey="help" onClick={() => openWindow("faq")} isDark={isDark} isOpen={openWindowIds.includes("faq")} imgDark="/images/Dark Thanks.webp" imgLight="/images/Light Thanks.webp" imgClicking="/images/Clicking Thanks.webp" imgClicked="/images/Clicked Thanks.webp" />
           <WindowIcon label="Formation" iconKey="radio" onClick={() => openWindow("formation")} isDark={isDark} isOpen={openWindowIds.includes("formation")} imgDark="/images/Dark Formation.webp" imgLight="/images/Light Formation.webp" imgClicking="/images/Clicking Formation.webp" imgClicked="/images/Clicked Formation.webp" />
+          <WindowIcon label="QUESTIONS" iconKey="help" onClick={() => undefined} isDark={isDark} imgDark="/images/Dark Question.webp" imgLight="/images/Light Question.webp" imgClicking="/images/Clicking Question.webp" imgClicked="/images/Clicked Question.webp" />
         </div>
       </div>
     </section>
@@ -663,11 +664,11 @@ function WindowIcon({
         className={`w-16 h-16 rounded-none border-2 flex items-center justify-center shadow-sm transition ${
           isOpen
             ? isDark
-              ? "border-[#ec4899] shadow-[0_0_16px_rgba(236,72,153,0.45)]"
-              : "border-[#ec4899] shadow-[0_0_16px_rgba(236,72,153,0.25)]"
+              ? "border-[#CE9DE5] shadow-[0_0_16px_rgba(236,72,153,0.45)]"
+              : "border-[#CE9DE5] shadow-[0_0_16px_rgba(236,72,153,0.25)]"
             : isDark
-            ? "border-[#1f2937] bg-[#020617] group-hover:border-[#ec4899] group-hover:shadow-[0_0_16px_rgba(236,72,153,0.45)]"
-            : "border-[#a8b5c8] bg-[#f8fafc] group-hover:border-[#ec4899] group-hover:shadow-[0_0_16px_rgba(236,72,153,0.25)]"
+            ? "border-[#1f2937] bg-[#020617] group-hover:border-[#CE9DE5] group-hover:shadow-[0_0_16px_rgba(236,72,153,0.45)]"
+            : "border-[#a8b5c8] bg-[#f8fafc] group-hover:border-[#CE9DE5] group-hover:shadow-[0_0_16px_rgba(236,72,153,0.25)]"
         }`}
       >
         {imgSrc ? (
@@ -678,7 +679,7 @@ function WindowIcon({
       </div>
       <span
         className={`uppercase tracking-[0.16em] text-[10px] transition ${
-          isDark ? "text-slate-400 group-hover:text-[#ec4899]" : "text-slate-600 group-hover:text-[#ec4899]"
+          isDark ? "text-slate-400 group-hover:text-[#CE9DE5]" : "text-slate-600 group-hover:text-[#CE9DE5]"
         }`}
       >
         {label}
