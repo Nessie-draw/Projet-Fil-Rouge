@@ -7,12 +7,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Octobots – CRUQAC",
-  description: "Plateforme officielle de la compétition robotique Octobots organisée par le club de robotique de l'UQAC.",
+  title: "OCTOBOTS – CRUQAC",
+  description: "Plateforme officielle de la compétition robotique OCTOBOTS organisée par le club de robotique de l'UQAC.",
   openGraph: {
-    title: "Octobots – CRUQAC",
+    title: "OCTOBOTS – CRUQAC",
     description: "Compétition de robotique organisée par le club de robotique de l'UQAC.",
-    siteName: "Octobots",
+    siteName: "OCTOBOTS",
     type: "website",
   },
 };

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+
+@font-face { /*Nouvelle police d'écriture pixelisée*/
+  font-family: "Ari-W9500";
+  src: url("/font/ari-w9500-display.ttf") format("truetype");
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,7 +26,7 @@
 }
 
 html, body, * {
-  font-family: "Courier New", monospace !important;
+  font-family: "Ari-W9500", monospace !important;
 }
 
 body {
@@ -32,7 +39,7 @@ body {
 .pixel-ui input,
 .pixel-ui textarea,
 .pixel-ui select {
-  font-family: "Courier New", monospace;
+  font-family: "Ari-W9500", monospace;
   text-rendering: geometricPrecision;
 }
 

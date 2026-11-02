@@ -475,9 +475,9 @@ function MainWindow({
       <div className={`${isMobile ? "px-4 pt-4 pb-6" : "px-10 pt-5 pb-10"} ${isDark ? "bg-[#020617]" : "bg-[#f3f6fb]"}`}>
         <div className={isMobile ? "mb-4" : "mb-8"}>
           <p className={`text-2xl mb-3 ${isDark ? "text-slate-100" : "text-slate-900"}`}>
-            A-propos d&apos;
-            <span className={isDark ? "text-[#22c55e] font-bold" : "text-[#0284c7] font-bold"}>
-              Octobots
+            À propos d&apos;
+            <span className={isDark ? "text-[#CE9DE5] font-bold" : "text-[#CE9DE5] font-bold"}>
+              OCTOBOTS
             </span>
           </p>
           <style>{`
@@ -490,9 +490,9 @@ function MainWindow({
           <div className="overflow-hidden" style={{ height: "7.5em" }}>
             <div className="tp-inner">
               <p className={isDark ? "text-slate-400" : "text-slate-600"}>
-                OCTOBTS est de retour pour sa troisieme edition de combats de robots, organisé par les
-                etudiants du club de robotique de l&apos;UQAC.
-                Vous etes tous bienvenus à participer et à assister à la compétition ainsi qu&apos;à nos
+                OCTOBOTS est de retour pour sa troisième édition de combats de robots, organisé par les
+                étudiants du club de robotique de l&apos;UQAC.
+                Vous êtes tous bienvenus à participer et à assister à la compétition ainsi qu&apos;à nos
                 nombreuses formations, où nous enseignons aux débutants à faire leur premier robot.
                 Pas de destruction ne veut pas dire pas de fun! Nos combats de style sumo invitent des robots
                 originaux, réflechis et amusants.
@@ -502,15 +502,15 @@ function MainWindow({
               </p>
               <div style={{ height: "1em" }} />
               <p className={isDark ? "text-slate-400" : "text-slate-600"}>
-                OCTOBTS est de retour pour sa troisieme edition de combats de robots, organisé par les
-                etudiants du club de robotique de l&apos;UQAC.
-                Vous etes tous bienvenus à participer et à assister à la compétition ainsi qu&apos;à nos
+                OCTOBOTS est de retour pour sa troisième édition de combats de robots, organisé par les
+                étudiants du club de robotique de l&apos;UQAC.
+                Vous êtes tous bienvenus à participer et à assister à la compétition ainsi qu&apos;à nos
                 nombreuses formations, où nous enseignons aux débutants à faire leur premier robot.
                 Pas de destruction ne veut pas dire pas de fun! Nos combats de style sumo invitent des robots
                 originaux, réflechis et amusants.
               </p>
               <p className={isDark ? "text-slate-400" : "text-slate-600"}>
-                Serez vous le prochain à vaincre tous les robots?
+                Serez-vous le prochain à vaincre tous les robots?
               </p>
               <div style={{ height: "1em" }} />
             </div>
