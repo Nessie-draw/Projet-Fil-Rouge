@@ -151,7 +151,7 @@ function SocialIcon({ href, label, isDark, imgDark, imgLight, imgClicking }: {
       onMouseUp={() => setIsPressing(false)}
       onMouseLeave={() => setIsPressing(false)}
     >
-      <Image src={src} alt={label} width={32} height={32} className="opacity-70 hover:opacity-100 transition-opacity" />
+      <Image src={src} alt={label} width={36} height={36} className="opacity-70 hover:opacity-100 transition-opacity" />
     </a>
   );
 }
@@ -357,15 +357,17 @@ export default function Bureau() {
         )}
         <IconButton
           label="Changer theme"
-          icon={isDark ? "◐" : "◑"}
           onClick={toggleTheme}
           isDark={isDark}
+          imgDark="/images/Dark Mode.webp"
+          imgLight="/images/Light Mode.webp"
         />
         <IconButton
           label="Activer ou couper son"
-          icon={sfxEnabled ? "♪" : "x"}
           onClick={toggleSfx}
           isDark={isDark}
+          imgDark={sfxEnabled ? "/images/Dark Sound.webp" : "/images/Dark Silence.webp"}
+          imgLight={sfxEnabled ? "/images/Light Sound.webp" : "/images/Light Silence.webp"}
         />
       </div>
 
@@ -418,15 +420,19 @@ export default function Bureau() {
 
 function IconButton({
   label,
-  icon,
   onClick,
   isDark,
+  imgDark,
+  imgLight,
 }: {
   label: string;
-  icon: string;
   onClick: () => void;
   isDark: boolean;
+  imgDark?: string;
+  imgLight?: string;
 }) {
+  const src = imgDark && imgLight ? (isDark ? imgDark : imgLight) : undefined;
+
   return (
     <button
       onClick={onClick}
@@ -434,11 +440,13 @@ function IconButton({
       title={label}
       className={`w-9 h-9 rounded-none border-2 text-sm leading-none flex items-center justify-center transition ${
         isDark
-          ? "border-[#334155] bg-[#0f172a] text-slate-200 hover:border-[#22c55e] hover:text-white"
-          : "border-[#9aa8bb] bg-[#f8fafc] text-slate-700 hover:border-[#0284c7] hover:text-slate-900"
+          ? "border-[#334155] bg-[#0f172a] text-slate-200 hover:border-[#CE9DE5] hover:text-white"
+          : "border-[#9aa8bb] bg-[#f8fafc] text-slate-700 hover:border-[#CE9DE5] hover:text-slate-900"
       }`}
     >
-      {icon}
+      {src ? (
+        <Image src={src} alt={label} width={24} height={24} className="object-contain" />
+      ) : null}
     </button>
   );
 }
@@ -469,7 +477,7 @@ function MainWindow({
             : "bg-[#dbe4ef] border-[#b7c2d3] text-[#0f172a]"
         }`}
       >
-        Navigation 
+        Par le Club de Robotique de l&apos;UQAC 
       </div>
 
       <div className={`${isMobile ? "px-4 pt-4 pb-6" : "px-10 pt-5 pb-10"} ${isDark ? "bg-[#020617]" : "bg-[#f3f6fb]"}`}>
@@ -490,7 +498,7 @@ function MainWindow({
           <div className="overflow-hidden" style={{ height: "7.5em" }}>
             <div className="tp-inner">
               <p className={isDark ? "text-slate-400" : "text-slate-600"}>
-                OCTOBOTS est de retour pour sa troisième édition de combats de robots, organisé par les
+                OCTOBOTS est de retour pour sa quatrième édition de combats de robots, organisé par les
                 étudiants du club de robotique de l&apos;UQAC.
                 Vous êtes tous bienvenus à participer et à assister à la compétition ainsi qu&apos;à nos
                 nombreuses formations, où nous enseignons aux débutants à faire leur premier robot.
@@ -502,7 +510,7 @@ function MainWindow({
               </p>
               <div style={{ height: "1em" }} />
               <p className={isDark ? "text-slate-400" : "text-slate-600"}>
-                OCTOBOTS est de retour pour sa troisième édition de combats de robots, organisé par les
+                OCTOBOTS est de retour pour sa quatrième édition de combats de robots, organisé par les
                 étudiants du club de robotique de l&apos;UQAC.
                 Vous êtes tous bienvenus à participer et à assister à la compétition ainsi qu&apos;à nos
                 nombreuses formations, où nous enseignons aux débutants à faire leur premier robot.
