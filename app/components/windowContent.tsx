@@ -8,6 +8,7 @@ import { CompetitionContent } from "../windows/CompetitionContent";
 import { InscriptionsContent } from "../windows/InscriptionsContent";
 import { BracketContent } from "../windows/BracketContent";
 import { FormationContent } from "../windows/FormationContent";
+import { QuestionsContent } from "../windows/QuestionsContent";
 
 type WindowContentProps = {
   id: WindowId;
@@ -25,5 +26,6 @@ export function WindowContent({ id, openWindow, isDark, openWindowIds }: WindowC
   if (id === "inscriptions") return <InscriptionsContent />;
   if (id === "bracket") return <BracketContent />;
   if (id === "formation") return <FormationContent />;
+  if (id === "questions") return <QuestionsContent />;
   return null;
 }
