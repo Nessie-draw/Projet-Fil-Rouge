@@ -16,10 +16,9 @@ Le site de base du club : le bureau avec ses fenêtres, les inscriptions, l'arbr
 
 - Une icône "Question" sur le bureau, qui ouvre une fenêtre
 - Une FAQ avec une barre de recherche (notre fonctionnalité supplémentaire)
-- Un chat : on entre son nom et son courriel, puis on écrit au club
-- Ce sont des membres du club qui répondent, pas une IA
 - Un chat : on entre son nom et son courriel ensuite on ecrit au club. Les messages sont enregistres dans la base de donnees avec l'heure
 - Une page admin (/admin/messages) ou les membres du club lisent les messages et repondent. La reponse apparait dans le chat du visiteur en quelques secondes
+- Ce sont des membres du club qui répondent, pas une IA
 
 ## Conception
 
@@ -33,6 +32,7 @@ Next.js, React, Tailwind CSS et une base de données PostgreSQL sur Neon.
 
 npm install, puis npm run dev, et ouvrir http://localhost:3000.
 Il faut aussi le fichier .env.local (pas sur GitHub).
+Pour crééer lestables de la base : run.cmd db:init
 
 ## Équipe
 
