@@ -18,6 +18,8 @@ Le site de base du club : le bureau avec ses fenêtres, les inscriptions, l'arbr
 - Une FAQ avec une barre de recherche (notre fonctionnalité supplémentaire)
 - Un chat : on entre son nom et son courriel, puis on écrit au club
 - Ce sont des membres du club qui répondent, pas une IA
+- Un chat : on entre son nom et son courriel ensuite on ecrit au club. Les messages sont enregistres dans la base de donnees avec l'heure
+- Une page admin (/admin/messages) ou les membres du club lisent les messages et repondent. La reponse apparait dans le chat du visiteur en quelques secondes
 
 ## Conception
 
