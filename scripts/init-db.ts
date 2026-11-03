@@ -53,7 +53,18 @@ async function initDb() {
     )
   `;
   console.log("  tournament     OK");
-
+  // 4. Table messages (chat de la fenêtre Question)
+  await sql`
+    CREATE TABLE IF NOT EXISTS messages (
+      id          SERIAL PRIMARY KEY,
+      nom         TEXT NOT NULL,
+      courriel    TEXT NOT NULL,
+      texte       TEXT NOT NULL,
+      auteur      TEXT NOT NULL DEFAULT 'visiteur',
+      created_at  TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+  console.log("  messages       OK");
   console.log("\nBase de données initialisée avec succès.");
 }
 
