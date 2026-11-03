@@ -1,21 +1,28 @@
 // app/windows/ChatClub.tsx
-// Chat avec le club : formulaire nom/courriel, puis discussion
+// Chat avec le club : formulaire nom/courriel, puis discussion enregistrée dans la base
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-// Un message du chat
+// Un message tel que renvoyé par la route /api/messages
 type Message = {
-  auteur: string;
+  id: number;
+  nom: string;
   texte: string;
-  heure: string;
+  auteur: string; // "visiteur" ou "club"
+  created_at: string;
 };
 
-// Heure actuelle au format « 14 h 05 »
-function heureActuelle() {
-  const maintenant = new Date();
-  const minutes = String(maintenant.getMinutes()).padStart(2, "0");
-  return maintenant.getHours() + " h " + minutes;
+// Transforme la date d'un message en heure au format « 14 h 05 »
+function formaterHeure(date: string) {
+  const d = new Date(date);
+  return d.getHours() + " h " + String(d.getMinutes()).padStart(2, "0");
+}
+
+// Demande à la route API les messages de ce courriel
+async function lireMessages(courriel: string): Promise<Message[]> {
+  const reponse = await fetch(`/api/messages?courriel=${encodeURIComponent(courriel)}`);
+  return reponse.ok ? reponse.json() : [];
 }
 
 // Style commun des champs de texte (le même que la fenêtre Inscriptions)
@@ -29,28 +36,45 @@ export function ChatClub() {
   const [courriel, setCourriel] = useState("");
   const [texte, setTexte] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [erreur, setErreur] = useState("");
 
-  // Formulaire nom/courriel validé : on passe au chat avec un message de bienvenue
-  const commencerChat = (e: React.FormEvent) => {
+  // Pendant le chat : on recharge les messages toutes les 5 secondes,
+  // pour voir les réponses du club presque en temps réel
+  useEffect(() => {
+    if (etape !== "chat") return;
+    const intervalle = setInterval(async () => {
+      setMessages(await lireMessages(courriel));
+    }, 5000);
+    return () => clearInterval(intervalle); // on arrête quand la fenêtre se ferme
+  }, [etape, courriel]);
+
+  // Formulaire nom/courriel validé : on charge l'historique, puis on passe au chat
+  const commencerChat = async (e: React.FormEvent) => {
     e.preventDefault(); // empêche la page de se recharger
-    setMessages([
-      {
-        auteur: "CRUQAC",
-        texte: `Bonjour ${nom} ! Écrivez votre question : un membre du club vous répondra ici ou à ${courriel}.`,
-        heure: heureActuelle(),
-      },
-    ]);
+    setMessages(await lireMessages(courriel));
     setEtape("chat");
   };
 
-  // Envoi d'un message dans le chat
-  const envoyerMessage = (e: React.FormEvent) => {
+  // Envoi d'un message : on l'enregistre dans la base avec la route API
+  const envoyerMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (texte.trim() === "") return; // on ignore les messages vides
+    setErreur("");
 
-    // On ajoute le nouveau message à la fin de la liste
-    // (plus tard : on l'enregistrera aussi dans la base de données avec fetch)
-    setMessages([...messages, { auteur: nom, texte: texte.trim(), heure: heureActuelle() }]);
+    const reponse = await fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nom, courriel, texte }),
+    });
+    const resultat = await reponse.json();
+
+    if (!reponse.ok) {
+      setErreur(resultat.error || "Le message n'a pas pu être envoyé.");
+      return;
+    }
+
+    // Le message enregistré (avec son heure) est ajouté à la fin de la liste
+    setMessages([...messages, resultat]);
     setTexte("");
   };
 
@@ -79,17 +103,27 @@ export function ChatClub() {
   // Étape 2 : le chat
   return (
     <div className="space-y-2">
-      {/* Liste des messages : ceux du club à gauche, les nôtres à droite */}
       <ol className="space-y-2 max-h-48 overflow-y-auto">
-        {messages.map((m, i) => (
-          <li key={i} className={m.auteur === nom ? "flex justify-end" : "flex"}>
-            <div className={`max-w-[75%] rounded-lg px-3 py-2 ${m.auteur === nom ? "bg-[#1d4ed8]" : "bg-[#1f2937]"}`}>
+        {/* Message de bienvenue (affiché seulement, pas enregistré) */}
+        <li className="flex">
+          <div className="max-w-[75%] rounded-lg px-3 py-2 bg-[#1f2937]">
+            <p>Bonjour {nom} ! Écrivez votre question : un membre du club vous répondra ici ou à {courriel}.</p>
+          </div>
+        </li>
+
+        {/* Messages enregistrés : les nôtres à droite, ceux du club à gauche */}
+        {messages.map((m) => (
+          <li key={m.id} className={m.auteur === "visiteur" ? "flex justify-end" : "flex"}>
+            <div className={`max-w-[75%] rounded-lg px-3 py-2 ${m.auteur === "visiteur" ? "bg-[#1d4ed8]" : "bg-[#1f2937]"}`}>
               <p>{m.texte}</p>
-              <time className="block text-[10px] opacity-60">{m.heure}</time>
+              <time className="block text-[10px] opacity-60">{formaterHeure(m.created_at)}</time>
             </div>
           </li>
         ))}
       </ol>
+
+      {/* Message d'erreur si l'envoi échoue */}
+      {erreur && <p className="text-red-400">{erreur}</p>}
 
       {/* Champ pour écrire un message (Entrée envoie le message) */}
       <form onSubmit={envoyerMessage} className="flex gap-2">
