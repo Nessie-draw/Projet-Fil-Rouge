@@ -1,4 +1,37 @@
-# Projet-Fil-Rouge
-Le projet vise à ajouter une messagerie au site web https://cruqac.ca/. 
+# Projet Fil-Rouge - Messagerie OCTOBOTS
 
-Le site en question est une page d'acceuil du club de robotique de l'UQAC pour sa compétition de combat de robot OCTOBOTS. La messagerie permetterait de poser des questions au membres du club directement et de recevoir une réponse instantanée ou un courriel plus tard. L'utilisateur et le membre du club doit pouvoir recevoir une notification pour chaque nouveau message même en minimisant le browser
+Projet du cours 8WEB101 à l'UQAC.
+
+On a ajouté une messagerie au site du club de robotique de l'UQAC (https://cruqac.ca/), qui organise la compétition de robots OCTOBOTS. Les visiteurs peuvent poser leurs questions au club directement sur le site.
+
+## Site en ligne
+
+(à venir)
+
+## Ce qui existait déjà
+
+Le site de base du club : le bureau avec ses fenêtres, les inscriptions, l'arbre du tournoi et l'espace admin.
+
+## Ce qu'on a ajouté
+
+- Une icône "Question" sur le bureau, qui ouvre une fenêtre
+- Une FAQ avec une barre de recherche (notre fonctionnalité supplémentaire)
+- Un chat : on entre son nom et son courriel, puis on écrit au club
+- Ce sont des membres du club qui répondent, pas une IA
+
+## Conception
+
+Un premier prototype de la messagerie a été fait en HTML, CSS et JavaScript (connexion, conversations, FAQ, paramètres). Il est sur la branche `Pages_anne`.
+
+## Technologies
+
+Next.js, React, Tailwind CSS et une base de données PostgreSQL sur Neon.
+
+## Lancer le projet
+
+npm install, puis npm run dev, et ouvrir http://localhost:3000.
+Il faut aussi le fichier .env.local (pas sur GitHub).
+
+## Équipe
+
+Inès Lyagoubi et Anne-Samuelle Allebi
