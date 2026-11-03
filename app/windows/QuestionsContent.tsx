@@ -3,6 +3,7 @@
 "use client";
 
 import { useState } from "react";
+import { ChatClub } from "./ChatClub";
 
 // Liste des questions, regroupées par catégorie
 const categories = [
@@ -86,6 +87,11 @@ export function QuestionsContent() {
       {resultats.length === 0 && (
         <p className="opacity-60">Aucune question ne correspond à votre recherche.</p>
       )}
+    {/* Si la FAQ ne suffit pas : discussion avec un membre du club */}
+      <section className="pt-2 border-t border-[#1f2937]">
+        <h3 className="mb-2 uppercase tracking-widest text-[#22c55e]">Une autre question ?</h3>
+        <ChatClub />
+      </section>
     </div>
   );
 }
