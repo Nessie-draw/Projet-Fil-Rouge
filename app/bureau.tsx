@@ -280,6 +280,7 @@ export default function Bureau() {
         inscriptions: "Inscriptions",
         bracket: "Arbre du tournoi",
         formation: "Formation",
+        questions: "Questions",
       };
 
       const newWindow: WindowState = {
@@ -337,8 +338,8 @@ export default function Bureau() {
         <Image
           src={isDark ? "/images/Logo light big.webp" : "/images/Logo dark big.webp"}
           alt="Octobots"
-          width={120}
-          height={120}
+          width={160}
+          height={160}
           style={{ imageRendering: "pixelated" }}
         />
       </div>
@@ -403,14 +404,14 @@ export default function Bureau() {
             <SocialIcon href="https://www.instagram.com/cruqac_robotique?igsh=MWo3NmRxZTRjem9hMw==" label="Instagram" isDark={isDark} imgDark="/images/Dark Instagram.webp" imgLight="/images/Light Instagram.webp" imgClicking={isDark ? "/images/Clicking Dark Instagram.webp" : "/images/Clicking Light Instagram.webp"} />
             <SocialIcon href="https://www.linkedin.com/in/club-de-robotique-cruqac-94ab29385?utm_source=share_via&utm_content=profile&utm_medium=member_ios" label="LinkedIn" isDark={isDark} imgDark="/images/Dark LinkedIn.webp" imgLight="/images/Light LinkedIn.webp" imgClicking={isDark ? "/images/Clicking Dark LinkedIn.webp" : "/images/Clicking Light LinkedIn.webp"} />
             <SocialIcon href="mailto:clubrobotuqac@gmail.com" label="Email" isDark={isDark} imgDark="/images/Dark Email.webp" imgLight="/images/Light Email.webp" imgClicking={isDark ? "/images/Clicking Dark Email.webp" : "/images/Clicking Light Email.webp"} />
-            <SocialIcon href="https://youtube.com/@cruqac?si=DxKoucBYjS6de_yB" label="YouTube" isDark={isDark} imgDark="/images/Dark YouTube.webp" imgLight="/images/Light YouTube.webp" imgClicking={isDark ? "/images/Clicking Dark YouTube.webp" : "/images/Clicking Light Youtube.webp"} />
+            <SocialIcon href="https://www.youtube.com/@CRUQAC" label="YouTube" isDark={isDark} imgDark="/images/Dark YouTube.webp" imgLight="/images/Light YouTube.webp" imgClicking={isDark ? "/images/Clicking Dark YouTube.webp" : "/images/Clicking Light Youtube.webp"} />
           </div>
           <p
             className={`text-center text-[11px] tracking-[0.08em] uppercase pb-2 ${
               isDark ? "text-slate-400" : "text-slate-600"
             }`}
           >
-            © 2026 Octobots-CRUQAC 
+            © 2026 OCTOBOTS - CRUQAC 
           </p>
         </footer>
       </main>
@@ -531,7 +532,7 @@ function MainWindow({
           <WindowIcon label="streaming" iconKey="link" onClick={() => openWindow("liens")} isDark={isDark} isOpen={openWindowIds.includes("liens")} imgDark="/images/Dark Stream.webp" imgLight="/images/Light Stream.webp" imgClicking="/images/Clicking Stream.webp" imgClicked="/images/Clicked Stream.webp" />
           <WindowIcon label="Remerciements" iconKey="help" onClick={() => openWindow("faq")} isDark={isDark} isOpen={openWindowIds.includes("faq")} imgDark="/images/Dark Thanks.webp" imgLight="/images/Light Thanks.webp" imgClicking="/images/Clicking Thanks.webp" imgClicked="/images/Clicked Thanks.webp" />
           <WindowIcon label="Formation" iconKey="radio" onClick={() => openWindow("formation")} isDark={isDark} isOpen={openWindowIds.includes("formation")} imgDark="/images/Dark Formation.webp" imgLight="/images/Light Formation.webp" imgClicking="/images/Clicking Formation.webp" imgClicked="/images/Clicked Formation.webp" />
-          <WindowIcon label="QUESTIONS" iconKey="help" onClick={() => undefined} isDark={isDark} imgDark="/images/Dark Question.webp" imgLight="/images/Light Question.webp" imgClicking="/images/Clicking Question.webp" imgClicked="/images/Clicked Question.webp" />
+          <WindowIcon label="Question" iconKey="help" onClick={() => openWindow("questions")} isDark={isDark} isOpen={openWindowIds.includes("questions")} imgDark="/images/Dark Question.webp" imgLight="/images/Light Question.webp" imgClicking="/images/Clicking Question.webp" imgClicked="/images/Clicked Question.webp" />
         </div>
       </div>
     </section>

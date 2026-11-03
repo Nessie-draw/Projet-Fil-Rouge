@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 
-export type WindowId = "a-propos" | "reglement" | "competition" | "liens" | "faq" | "inscriptions" | "bracket" | "formation";
+export type WindowId = "a-propos" | "reglement" | "competition" | "liens" | "faq" | "inscriptions" | "bracket" | "formation" | "questions";
 export type WindowState = {
   id: WindowId;
   title: string;

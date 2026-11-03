@@ -4,8 +4,8 @@
 export function LiensContent() {
   return (
     <iframe
-      src="https://www.youtube.com/embed/V2DfM0RfG1U"
-      title="CRUQAC Live Stream"
+      src="https://www.youtube.com/embed/bgowteJ1bkY"
+      title="OCTOBOTS 2026 - CRUQAC"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowFullScreen
       style={{
