@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres</title>
+  <!-- Style commun à toutes les pages, puis style propre aux paramètres -->
+  <link rel="stylesheet" href="css/conversation.css">
+  <link rel="stylesheet" href="css/parametre.css">
+  <!-- Icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<!-- "sans-liste" = une seule colonne -->
+<body class="sans-liste">
+
+  <!-- En-tête identique aux autres pages -->
+  <header>
+    <div class="titre">
+      <img src="image/logo-dark-big.webp" alt="Logo Octobots" class="logo-petit">
+      <h1>Messagerie Octobots</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="conversation.html"><i class="fa-solid fa-comments"></i> Conversations</a></li>
+        <li><a href="faq.html"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+        <li><a href="parametre.html" aria-current="page"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Paramètres</h2>
+
+    <div class="tabs-container">
+      <!-- Les onglets (boutons) -->
+      <div class="tab-header">
+        <button type="button" class="tab-button active" onclick="openTab(event, 'profil')">Profil</button>
+        <button type="button" class="tab-button" onclick="openTab(event, 'session')">Session</button>
+      </div>
+
+      <!-- Onglet Profil (affiché au départ) -->
+      <div id="profil" class="tab-content" style="display: block;">
+        <h3>Mon profil</h3>
+          <p>Nom : Membre Octobots</p>
+          <p>Courriel : membre@exemple.com</p>
+      </div>
+
+      <!-- Onglet Session (caché au départ) -->
+      <div id="session" class="tab-content" style="display: none;">
+        <h3>Session</h3>
+        <p>Vous serez renvoyé à la page de connexion.</p>
+        <a href="index.html" class="btn-deconnexion"><i class="fa-solid fa-right-from-bracket"></i> Se déconnecter</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Onglets et préférence de son -->
+  <script src="js/parametre.js"></script>
+
+</body>
+</html>
