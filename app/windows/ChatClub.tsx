@@ -25,6 +25,9 @@ async function lireMessages(courriel: string): Promise<Message[]> {
   return reponse.ok ? reponse.json() : [];
 }
 
+// Clé utilisée pour garder le visiteur connecté dans le navigateur (localStorage)
+const CLE_VISITEUR = "chat-visiteur";
+
 // Style commun des champs de texte (le même que la fenêtre Inscriptions)
 const styleChamp =
   "w-full rounded-md bg-[#020617] border border-[#1f2937] px-2 py-1 text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#22c55e]";
@@ -37,6 +40,24 @@ export function ChatClub() {
   const [texte, setTexte] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [erreur, setErreur] = useState("");
+
+  // À l'ouverture : si le visiteur s'est déjà présenté, on le reconnecte directement
+  useEffect(() => {
+    try {
+      const sauvegarde = localStorage.getItem(CLE_VISITEUR);
+      if (!sauvegarde) return;
+      const visiteur = JSON.parse(sauvegarde); // le texte redevient un objet { nom, courriel }
+      // On charge son historique, puis on ouvre directement le chat
+      lireMessages(visiteur.courriel).then((liste) => {
+        setNom(visiteur.nom);
+        setCourriel(visiteur.courriel);
+        setMessages(liste);
+        setEtape("chat");
+      });
+    } catch {
+      // localStorage indisponible (navigation privée) : on garde le formulaire
+    }
+  }, []);
 
   // Pendant le chat : on recharge les messages toutes les 5 secondes,
   // pour voir les réponses du club presque en temps réel
@@ -51,6 +72,12 @@ export function ChatClub() {
   // Formulaire nom/courriel validé : on charge l'historique, puis on passe au chat
   const commencerChat = async (e: React.FormEvent) => {
     e.preventDefault(); // empêche la page de se recharger
+    try {
+      // On garde le nom et le courriel (en texte JSON) pour la prochaine visite
+      localStorage.setItem(CLE_VISITEUR, JSON.stringify({ nom, courriel }));
+    } catch {
+      // Pas grave si ça échoue : le chat fonctionne quand même
+    }
     setMessages(await lireMessages(courriel));
     setEtape("chat");
   };
@@ -78,6 +105,19 @@ export function ChatClub() {
     setTexte("");
   };
 
+  // Déconnexion : on oublie le visiteur et on revient au formulaire
+  const seDeconnecter = () => {
+    try {
+      localStorage.removeItem(CLE_VISITEUR);
+    } catch {
+      // rien à faire
+    }
+    setNom("");
+    setCourriel("");
+    setMessages([]);
+    setEtape("formulaire");
+  };
+
   // Étape 1 : formulaire nom/courriel
   if (etape === "formulaire") {
     return (
@@ -103,6 +143,14 @@ export function ChatClub() {
   // Étape 2 : le chat
   return (
     <div className="space-y-2">
+      {/* Qui est connecté, avec un bouton pour se déconnecter */}
+      <div className="flex items-center justify-between">
+        <p className="opacity-60">Connecté : {nom}</p>
+        <button type="button" onClick={seDeconnecter} className="underline opacity-80 hover:opacity-100">
+          Se déconnecter
+        </button>
+      </div>
+
       <ol className="space-y-2 max-h-48 overflow-y-auto">
         {/* Message de bienvenue (affiché seulement, pas enregistré) */}
         <li className="flex">
