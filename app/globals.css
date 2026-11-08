@@ -33,6 +33,29 @@ body {
   color: var(--foreground);
 }
 
+:root {
+  scrollbar-color: #334155 #020617;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border: 2px solid #020617;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
 .pixel-ui,
 .pixel-ui button,
 .pixel-ui input,
@@ -144,6 +167,13 @@ body {
   background: #020617;
 }
 
+.bracket-window-content > .bracket-shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .bracket-inner {
   margin: 0 auto;
 }
@@ -151,6 +181,12 @@ body {
 .bracket-scroll {
   overflow-x: auto;
   padding-bottom: 0.5rem;
+}
+
+.bracket-window-content .bracket-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: scroll;
 }
 
 .bracket-canvas {
@@ -273,8 +309,15 @@ body {
 
 .bracket-line-path {
   fill: none;
-  stroke: #475569;
+  stroke: #CE9DE5;
   stroke-width: 1.5;
+}
+
+.bracket-final-connector {
+  width: 24px;
+  flex: none;
+  border-top: 1.5px solid #CE9DE5;
+  transform: translateY(9px);
 }
 
 .bracket-node {
@@ -335,8 +378,8 @@ body {
 }
 
 .bracket-badge--v {
-  background: #4a7185;
-  color: #e8f6fc;
+  background: #CE9DE5;
+  color: #020617;
 }
 
 .bracket-badge--d {
@@ -359,9 +402,9 @@ body {
 }
 
 .bracket-vainqueur--won {
-  border: 2px solid #B1D8E9;
-  background: rgba(177, 216, 233, 0.12);
-  color: #DDF1F8;
+  border: 2px solid #CE9DE5;
+  background: rgba(206, 157, 229, 0.12);
+  color: #F3E8FF;
   font-weight: 800;
   font-style: normal;
   font-size: 11px;

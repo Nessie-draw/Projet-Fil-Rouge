@@ -176,7 +176,7 @@ export function DraggableWindow({
         {/* Content */}
         <div
           style={{ position: "relative", minHeight: 0 }}
-          className={`flex-1 ${id === "liens" ? "p-0 bg-black overflow-hidden" : isPdfWindow ? "p-0 overflow-hidden flex flex-col *:flex-1" : "overflow-y-auto p-4"} text-sm ${isDark ? "text-slate-200" : "text-slate-800"}`}
+           className={`${id === "liens" ? "p-0 bg-black" : isPdfWindow ? "p-0" : "p-4"} text-sm ${id === "liens" ? "" : isPdfWindow ? "overflow-hidden flex flex-col *:flex-1" : isBracketWindow ? "bracket-window-content flex flex-col *:flex-1" : `overflow-y-auto ${resizable || isFullscreen ? "flex flex-col *:flex-1" : ""}`} ${isDark ? "text-slate-200" : "text-slate-800"}`}
         >
           {children}
         </div>
@@ -285,8 +285,9 @@ export function DraggableWindow({
           flex: isFullscreen ? 1 : undefined,
           minHeight: isFullscreen || isBracketWindow ? 0 : undefined,
           position: "relative",
+          paddingBottom: isPdfWindow && resizable && !isFullscreen ? 18 : undefined,
         }}
-        className={`${id === "liens" ? "p-0 bg-black" : isPdfWindow ? "p-0" : "p-4"} text-sm ${id === "liens" ? "" : isPdfWindow ? "overflow-hidden flex flex-col *:flex-1" : isBracketWindow ? "bracket-window-content flex flex-col *:flex-1" : `overflow-y-auto ${resizable || isFullscreen ? "flex flex-col *:flex-1" : ""}`} ${isDark ? "text-slate-200" : "text-slate-800"}`}
+        className={`${id === "liens" || isPdfWindow || isBracketWindow ? "p-0" : "p-4"} ${id === "liens" ? "bg-black" : ""} text-sm ${id === "liens" ? "" : isPdfWindow ? "overflow-hidden flex flex-col *:flex-1" : isBracketWindow ? "bracket-window-content flex flex-col *:flex-1" : `overflow-y-auto ${resizable || isFullscreen ? "flex flex-col *:flex-1" : ""}`} ${isDark ? "text-slate-200" : "text-slate-800"}`}
       >
         {children}
       </div>

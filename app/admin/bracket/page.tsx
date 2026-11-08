@@ -211,11 +211,12 @@ export default function AdminBracketPage() {
         {/* ── Grande Finale + Champion ── */}
         <div className="mb-8">
           <h2 className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">Grande Finale</h2>
-          <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>
               <MatchCard match={tournament.grandFinal} onSelect={w => handleSelect("gf", w)} />
             </div>
+            <div className="bracket-final-connector" aria-hidden="true" />
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Champion</div>
               <div className={`bracket-vainqueur ${champion ? "bracket-vainqueur--won" : ""}`}>

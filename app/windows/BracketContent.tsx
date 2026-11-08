@@ -188,11 +188,12 @@ export function BracketContent() {
         {/* ── Grande Finale + Champion ── */}
         <div className="mb-4">
           <h3 className="text-xs font-bold text-[#CE9DE5] uppercase tracking-widest mb-2 ml-6">Grande Finale</h3>
-          <div style={{ display: "flex", gap: 24, alignItems: "center", paddingLeft: PAD }}>
+          <div style={{ display: "flex", alignItems: "center", paddingLeft: PAD }}>
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>
               <MatchCard match={tournament.grandFinal} />
             </div>
+            <div className="bracket-final-connector" aria-hidden="true" />
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Champion</div>
               <div className={`bracket-vainqueur ${champion ? "bracket-vainqueur--won" : ""}`}>

@@ -183,7 +183,7 @@ export function ChatClub() {
           onChange={(e) => setTexte(e.target.value)}
           className={`${styleChamp} min-w-0`}
         />
-        <button type="submit" className="shrink-0 px-3 rounded-lg bg-[#22c55e] text-[11px] font-semibold text-[#020617]">
+        <button type="submit" className="shrink-0 px-3 rounded-lg bg-[#CE9DE5] text-[11px] font-semibold text-[#020617] hover:bg-[#B984D4] transition">
           Envoyer
         </button>
       </form>
