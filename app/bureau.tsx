@@ -394,7 +394,7 @@ export default function Bureau() {
             resizable={windowState.id === "bracket" || windowState.id === "competition" || windowState.id === "liens" || windowState.id === "reglement" || windowState.id === "formation"}
             isMobile={isMobile}
           >
-            <WindowContent id={windowState.id} openWindow={openWindow} isDark={isDark} openWindowIds={windows.map(w => w.id)} />
+            <WindowContent id={windowState.id} openWindow={openWindow} isDark={isDark} openWindowIds={windows.map(w => w.id)} soundEnabled={sfxEnabled} />
           </DraggableWindow>
         ))}
 

@@ -51,9 +51,16 @@ export function DraggableWindow({
   const isDark = theme === "dark";
   // Fenêtres affichant un PDF plein-bord (sans padding, contenu pleine surface)
   const isPdfWindow = id === "reglement" || id === "formation";
+  const downloadInfo =
+    id === "reglement"
+      ? { url: "/reglements.pdf", name: "Reglements-OCTOBOTS-2027.pdf" }
+      : id === "formation"
+        ? { url: "/formation.pdf", name: "Formation-OCTOBOTS-2027.pdf" }
+        : null;
 
   // ── Drag ─────────────────────────────────────────────────────────────────
   const [isDragging, setIsDragging] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const dragStart = useRef({ mouseX: 0, mouseY: 0, x: 0, y: 0 });
 
   // ── Resize ────────────────────────────────────────────────────────────────
@@ -140,12 +147,29 @@ export function DraggableWindow({
           }`}
         >
           <span>{title}</span>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-none bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-base leading-none border border-black/30"
-          >
-            ×
-          </button>
+          <div className="flex items-center gap-2">
+            {downloadInfo && (
+              <a
+                href={downloadInfo.url}
+                download={downloadInfo.name}
+                aria-label="Télécharger le PDF"
+                title="Télécharger le PDF"
+                className={`w-8 h-8 flex items-center justify-center border ${
+                  isDark
+                    ? "bg-[#1f2937] hover:bg-[#374151] text-white border-black/30"
+                    : "bg-[#cbd5e1] hover:bg-[#b7c2d3] text-slate-900 border-black/20"
+                }`}
+              >
+                <DownloadIcon />
+              </a>
+            )}
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-none bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-base leading-none border border-black/30"
+            >
+              ×
+            </button>
+          </div>
         </div>
 
         {/* Content */}
@@ -166,17 +190,19 @@ export function DraggableWindow({
     <div
       style={{
         position: "fixed",
-        left: x,
-        top: y,
-        zIndex: z,
+        left: isFullscreen ? 0 : x,
+        top: isFullscreen ? 0 : y,
+        zIndex: 1000 + z,
         cursor: isDragging ? "grabbing" : "default",
-        width:  resizable ? size.w : DEFAULT_W,
-        height: resizable ? size.h : undefined,
-        maxWidth: "95vw",
-        maxHeight: resizable ? "95vh" : undefined,
+        width: isFullscreen ? "100vw" : resizable ? size.w : DEFAULT_W,
+        height: isFullscreen ? "100dvh" : resizable ? size.h : undefined,
+        maxWidth: isFullscreen ? "100vw" : "95vw",
+        maxHeight: isFullscreen ? "100dvh" : resizable ? "95vh" : undefined,
       }}
       className={`pixel-panel rounded-none border-2 overflow-hidden transition-colors duration-300 ${
-        !resizable ? "min-h-[450px]" : ""
+        isFullscreen ? "flex flex-col" : ""
+      } ${
+        !resizable && !isFullscreen ? "min-h-[450px]" : ""
       } ${
         isDark
           ? "bg-[#050816] border-[#1f2937] shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
@@ -187,31 +213,85 @@ export function DraggableWindow({
       <div
         onMouseDown={handleTitlePointerDown}
         onTouchStart={handleTitlePointerDown}
-        className={`h-9 flex items-center justify-between px-3 text-xs select-none border-b ${
+        className={`h-9 flex flex-shrink-0 items-center justify-between px-3 text-xs select-none border-b ${
           isDark
             ? "bg-[#111827] text-[#e5f9f0] border-[#1f2937]"
             : "bg-[#dbe4ef] text-[#0f172a] border-[#b7c2d3]"
         }`}
       >
         <span>{title}</span>
-        <button
-          onClick={onClose}
-          className="w-5 h-5 rounded-none bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-[11px] leading-none border border-black/30"
-        >
-          ×
-        </button>
+        <div className="flex items-center gap-1">
+          {downloadInfo && (
+            <a
+              href={downloadInfo.url}
+              download={downloadInfo.name}
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              aria-label="Télécharger le PDF"
+              title="Télécharger le PDF"
+              className={`w-5 h-5 flex items-center justify-center border ${
+                isDark
+                  ? "bg-[#1f2937] hover:bg-[#374151] text-white border-black/30"
+                  : "bg-[#cbd5e1] hover:bg-[#b7c2d3] text-slate-900 border-black/20"
+              }`}
+            >
+              <DownloadIcon />
+            </a>
+          )}
+          <button
+            type="button"
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onClick={() => {
+              setIsFullscreen((current) => !current);
+              onFocus(id);
+            }}
+            aria-label={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
+            title={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
+            className={`w-5 h-5 flex items-center justify-center border text-[11px] leading-none ${
+              isDark
+                ? "bg-[#1f2937] hover:bg-[#374151] text-white border-black/30"
+                : "bg-[#cbd5e1] hover:bg-[#b7c2d3] text-slate-900 border-black/20"
+            }`}
+          >
+            {isFullscreen ? (
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3 h-3">
+                <path d="M4.5 1.5v3h-3M7.5 10.5v-3h3M4.5 4.5l-3-3M7.5 7.5l3 3" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3 h-3">
+                <path d="M1.5 4V1.5H4M8 1.5h2.5V4M10.5 8v2.5H8M4 10.5H1.5V8" />
+              </svg>
+            )}
+          </button>
+          <button
+            type="button"
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onClick={onClose}
+            className="w-5 h-5 rounded-none bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-[11px] leading-none border border-black/30"
+          >
+            ×
+          </button>
+        </div>
       </div>
 
       {/* Content */}
       <div
-        style={{ maxHeight: contentH, height: resizable ? contentH : undefined, position: "relative" }}
-        className={`${id === "liens" ? "p-0 bg-black" : isPdfWindow ? "p-0" : "p-4"} text-sm ${id === "liens" ? "" : isPdfWindow ? "overflow-hidden flex flex-col [&>*]:flex-1" : `overflow-y-auto ${resizable ? "flex flex-col [&>*]:flex-1" : ""}`} ${isDark ? "text-slate-200" : "text-slate-800"}`}
+        style={{
+          maxHeight: isFullscreen ? undefined : contentH,
+          height: isFullscreen ? undefined : resizable ? contentH : undefined,
+          flex: isFullscreen ? 1 : undefined,
+          minHeight: isFullscreen ? 0 : undefined,
+          position: "relative",
+        }}
+        className={`${id === "liens" ? "p-0 bg-black" : isPdfWindow ? "p-0" : "p-4"} text-sm ${id === "liens" ? "" : isPdfWindow ? "overflow-hidden flex flex-col [&>*]:flex-1" : `overflow-y-auto ${resizable || isFullscreen ? "flex flex-col [&>*]:flex-1" : ""}`} ${isDark ? "text-slate-200" : "text-slate-800"}`}
       >
         {children}
       </div>
 
       {/* Resize handle */}
-      {resizable && (
+      {resizable && !isFullscreen && (
         <div
           onMouseDown={handleResizePointerDown}
           onTouchStart={handleResizePointerDown}
@@ -238,5 +318,20 @@ export function DraggableWindow({
         </div>
       )}
     </div>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      className="w-3.5 h-3.5"
+      aria-hidden="true"
+    >
+      <path d="M8 1.5v8m0 0 3-3m-3 3-3-3M2.5 10.5v3h11v-3" />
+    </svg>
   );
 }

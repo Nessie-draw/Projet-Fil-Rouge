@@ -17,6 +17,6 @@ const PdfViewer = dynamic(
 
 export function FormationContent() {
   return (
-    <PdfViewer url="/formation.pdf" downloadName="Formation-Octobots-2026.pdf" />
+    <PdfViewer url="/formation.pdf" />
   );
 }

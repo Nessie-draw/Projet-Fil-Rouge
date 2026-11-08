@@ -17,6 +17,6 @@ const PdfViewer = dynamic(
 
 export function ReglementContent() {
   return (
-    <PdfViewer url="/reglements.pdf" downloadName="Reglements-Octobots-2026.pdf" />
+    <PdfViewer url="/reglements.pdf" />
   );
 }

@@ -15,12 +15,13 @@ type WindowContentProps = {
   openWindow: (id: WindowId) => void;
   isDark: boolean;
   openWindowIds: WindowId[];
+  soundEnabled: boolean;
 };
 
-export function WindowContent({ id, openWindow, isDark, openWindowIds }: WindowContentProps) {
+export function WindowContent({ id, openWindow, isDark, openWindowIds, soundEnabled }: WindowContentProps) {
   if (id === "a-propos") return <AProposContent />;
   if (id === "reglement") return <ReglementContent />;
-  if (id === "liens") return <LiensContent />;
+  if (id === "liens") return <LiensContent soundEnabled={soundEnabled} />;
   if (id === "faq") return <FaqContent />;
   if (id === "competition") return <BracketContent />;
   if (id === "inscriptions") return <InscriptionsContent />;
