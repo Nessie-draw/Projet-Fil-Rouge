@@ -140,7 +140,7 @@ export function DraggableWindow({
       >
         {/* Title bar */}
         <div
-          className={`h-12 flex items-center justify-between px-4 text-sm select-none border-b flex-shrink-0 ${
+          className={`h-12 flex items-center justify-between px-4 text-sm select-none border-b shrink-0 ${
             isDark
               ? "bg-[#111827] text-[#e5f9f0] border-[#1f2937]"
               : "bg-[#dbe4ef] text-[#0f172a] border-[#b7c2d3]"
@@ -175,7 +175,7 @@ export function DraggableWindow({
         {/* Content */}
         <div
           style={{ position: "relative", minHeight: 0 }}
-          className={`flex-1 ${id === "liens" ? "p-0 bg-black overflow-hidden" : isPdfWindow ? "p-0 overflow-hidden flex flex-col [&>*]:flex-1" : "overflow-y-auto p-4"} text-sm ${isDark ? "text-slate-200" : "text-slate-800"}`}
+          className={`flex-1 ${id === "liens" ? "p-0 bg-black overflow-hidden" : isPdfWindow ? "p-0 overflow-hidden flex flex-col *:flex-1" : "overflow-y-auto p-4"} text-sm ${isDark ? "text-slate-200" : "text-slate-800"}`}
         >
           {children}
         </div>
@@ -202,7 +202,7 @@ export function DraggableWindow({
       className={`pixel-panel rounded-none border-2 overflow-hidden transition-colors duration-300 ${
         isFullscreen ? "flex flex-col" : ""
       } ${
-        !resizable && !isFullscreen ? "min-h-[450px]" : ""
+        !resizable && !isFullscreen ? "min-h-112.5" : ""
       } ${
         isDark
           ? "bg-[#050816] border-[#1f2937] shadow-[0_20px_60px_rgba(0,0,0,0.7)]"

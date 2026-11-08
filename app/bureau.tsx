@@ -465,7 +465,7 @@ function MainWindow({
 }) {
   return (
     <section
-      className={`${isMobile ? "w-full" : "w-[860px]"} max-w-[92vw] overflow-hidden ${isMobile ? "min-h-0" : "min-h-[460px]"} transition-colors duration-300 border ${
+      className={`${isMobile ? "w-full" : "w-215"} max-w-[92vw] overflow-hidden ${isMobile ? "min-h-0" : "min-h-115"} transition-colors duration-300 border ${
         isDark
           ? "pixel-panel rounded-none bg-[#050816] border-[#1f2937] shadow-[0_20px_60px_rgba(0,0,0,0.7)]"
           : "pixel-panel rounded-none bg-[#e8edf5] border-[#b7c2d3] shadow-[0_20px_45px_rgba(15,23,42,0.22)]"
