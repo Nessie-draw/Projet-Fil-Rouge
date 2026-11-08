@@ -145,7 +145,7 @@ export function BracketContent() {
       <div className="bracket-scroll">
         {/* ── Winners Bracket ── */}
         <div className="mb-6">
-          <h3 className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-2 ml-6">Winners Bracket</h3>
+          <h3 className="text-xs font-bold text-[#CE9DE5] uppercase tracking-widest mb-2 ml-6">Winners Bracket</h3>
           <div style={{ display: "flex", paddingLeft: PAD, marginBottom: 6 }}>
             {wbLabels.map((l, r) => (
               <div key={r} className="bracket-round-label" style={{ width: CARD_W, marginRight: r < wbLabels.length - 1 ? R_GAP - CARD_W : 0, flexShrink: 0 }}>{l}</div>
@@ -166,7 +166,7 @@ export function BracketContent() {
         {/* ── Losers Bracket ── */}
         {hasLB && (
           <div className="mb-6">
-            <h3 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-2 ml-6">Losers Bracket</h3>
+            <h3 className="text-xs font-bold text-[#CE9DE5] uppercase tracking-widest mb-2 ml-6">Losers Bracket</h3>
             <div style={{ display: "flex", paddingLeft: PAD, marginBottom: 6 }}>
               {lbLabels.map((l, r) => (
                 <div key={r} className="bracket-round-label" style={{ width: CARD_W, marginRight: r < lbLabels.length - 1 ? R_GAP - CARD_W : 0, flexShrink: 0 }}>{l}</div>
@@ -187,7 +187,7 @@ export function BracketContent() {
 
         {/* ── Grande Finale + Champion ── */}
         <div className="mb-4">
-          <h3 className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2 ml-6">Grande Finale</h3>
+          <h3 className="text-xs font-bold text-[#CE9DE5] uppercase tracking-widest mb-2 ml-6">Grande Finale</h3>
           <div style={{ display: "flex", gap: 24, alignItems: "center", paddingLeft: PAD }}>
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>

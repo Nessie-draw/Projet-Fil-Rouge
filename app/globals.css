@@ -10,9 +10,6 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-ka1: "Ari-W9500", "Courier New", monospace;
@@ -22,6 +19,8 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
   }
 }
 
@@ -49,7 +48,7 @@ body {
 
 .pixel-brand {
   text-shadow:
-    1px 0 0 rgb(34 197 94 / 0.55),
+    1px 0 0 rgb(148 163 184 / 0.55),
     0 1px 0 rgb(2 6 23 / 0.7);
 }
 
@@ -210,7 +209,7 @@ body {
   font-weight: 800;
   flex-shrink: 0;
 }
-.bracket-qual-rank--top { background: rgba(34,197,94,0.2); color: #22c55e; }
+.bracket-qual-rank--top { background: rgba(177,216,233,0.2); color: #B1D8E9; }
 .bracket-qual-rank--bar { background: rgba(239,68,68,0.2);  color: #ef4444; }
 
 .bracket-qual-name {
@@ -246,7 +245,7 @@ body {
   font-weight: 700;
   flex-shrink: 0;
 }
-.bracket-qual-dest--demi    { color: #22c55e; }
+.bracket-qual-dest--demi    { color: #B1D8E9; }
 .bracket-qual-dest--barrage { color: #ef4444; }
 
 .bracket-qual-btn {
@@ -309,8 +308,8 @@ body {
 }
 
 .bracket-team-winner {
-  background: rgba(34, 197, 94, 0.2) !important;
-  color: #86efac;
+  background: rgba(177, 216, 233, 0.2) !important;
+  color: #B1D8E9;
   font-weight: 700;
 }
 
@@ -336,8 +335,8 @@ body {
 }
 
 .bracket-badge--v {
-  background: #16a34a;
-  color: #dcfce7;
+  background: #4a7185;
+  color: #e8f6fc;
 }
 
 .bracket-badge--d {
@@ -360,9 +359,9 @@ body {
 }
 
 .bracket-vainqueur--won {
-  border: 2px solid #22c55e;
-  background: rgba(34, 197, 94, 0.12);
-  color: #86efac;
+  border: 2px solid #B1D8E9;
+  background: rgba(177, 216, 233, 0.12);
+  color: #DDF1F8;
   font-weight: 800;
   font-style: normal;
   font-size: 11px;

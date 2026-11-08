@@ -21,7 +21,7 @@ export function PdfViewer({ url }: PdfViewerProps) {
     <div className="relative h-full bg-white text-black">
       {/* Zone de lecture.*/}
       <div
-        className="h-full overflow-y-scroll [&_.react-pdf__Page]:!w-full [&_canvas]:!w-full [&_canvas]:!h-auto"
+        className="h-full overflow-y-scroll [&_.react-pdf__Page]:w-full! [&_canvas]:w-full! [&_canvas]:h-auto!"
       >
         <Document
           file={url}

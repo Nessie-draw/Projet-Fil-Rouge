@@ -23,6 +23,42 @@ function useIsMobile(breakpoint = 768) {
 }
 
 type UiTone = "open" | "close" | "toggle";
+const THEME_STORAGE_KEY = "octobots-theme";
+const SFX_STORAGE_KEY = "octobots-sfx-enabled";
+const WINDOWS_STORAGE_KEY = "octobots-open-windows";
+const WINDOW_IDS: WindowId[] = [
+  "a-propos",
+  "reglement",
+  "competition",
+  "liens",
+  "faq",
+  "inscriptions",
+  "bracket",
+  "formation",
+  "questions",
+];
+
+function isWindowState(value: unknown): value is WindowState {
+  if (typeof value !== "object" || value === null) return false;
+
+  return (
+    "id" in value &&
+    typeof value.id === "string" &&
+    WINDOW_IDS.some((id) => id === value.id) &&
+    "title" in value &&
+    typeof value.title === "string" &&
+    "x" in value &&
+    typeof value.x === "number" &&
+    Number.isFinite(value.x) &&
+    "y" in value &&
+    typeof value.y === "number" &&
+    Number.isFinite(value.y) &&
+    "z" in value &&
+    typeof value.z === "number" &&
+    Number.isFinite(value.z)
+  );
+}
+
 type ToneSegment = {
   freqStart: number;
   freqEnd: number;
@@ -160,6 +196,8 @@ export default function Bureau() {
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [theme, setTheme] = useState<DesktopTheme>("dark");
   const [sfxEnabled, setSfxEnabled] = useState(true);
+  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
+  const [windowsLoaded, setWindowsLoaded] = useState(false);
 
   const zCounterRef = useRef(1);
   const soundRef = useRef<Record<UiTone, HTMLAudioElement | null>>({
@@ -171,6 +209,67 @@ export default function Bureau() {
 
   const isDark = theme === "dark";
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      if (savedTheme === "dark" || savedTheme === "light") {
+        setTheme(savedTheme);
+      }
+
+      const savedSfxEnabled = localStorage.getItem(SFX_STORAGE_KEY);
+      if (savedSfxEnabled === "true" || savedSfxEnabled === "false") {
+        setSfxEnabled(savedSfxEnabled === "true");
+      }
+    } catch (error) {
+      console.warn("Unable to load saved desktop preferences.", error);
+    } finally {
+      setPreferencesLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!preferencesLoaded) return;
+
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+      localStorage.setItem(SFX_STORAGE_KEY, String(sfxEnabled));
+    } catch (error) {
+      console.warn("Unable to save desktop preferences.", error);
+    }
+  }, [preferencesLoaded, theme, sfxEnabled]);
+
+  useEffect(() => {
+    try {
+      const savedWindows = sessionStorage.getItem(WINDOWS_STORAGE_KEY);
+      if (savedWindows) {
+        const parsed: unknown = JSON.parse(savedWindows);
+        if (!Array.isArray(parsed) || !parsed.every(isWindowState)) {
+          throw new Error("Saved windows have an invalid format.");
+        }
+
+        setWindows(parsed);
+        zCounterRef.current = Math.max(
+          1,
+          ...parsed.map((windowState) => windowState.z),
+        );
+      }
+    } catch (error) {
+      console.warn("Unable to load saved open windows.", error);
+    } finally {
+      setWindowsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!windowsLoaded) return;
+
+    try {
+      sessionStorage.setItem(WINDOWS_STORAGE_KEY, JSON.stringify(windows));
+    } catch (error) {
+      console.warn("Unable to save open windows.", error);
+    }
+  }, [windowsLoaded, windows]);
 
   const toneMap = useMemo(
     () => ({
@@ -327,6 +426,8 @@ export default function Bureau() {
     playUiTone("toggle", true);
     setSfxEnabled(nextValue);
   };
+
+  if (!preferencesLoaded || !windowsLoaded) return null;
 
   return (
     <div

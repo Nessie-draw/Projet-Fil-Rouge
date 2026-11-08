@@ -72,7 +72,7 @@ export function QuestionsContent() {
       {/* Questions par catégorie */}
       {resultats.map((categorie) => (
         <section key={categorie.titre}>
-          <h3 className="mb-2 uppercase tracking-widest text-[#22c55e]">{categorie.titre}</h3>
+          <h3 className="mb-2 uppercase tracking-widest text-[#CE9DE5]">{categorie.titre}</h3>
 
           {categorie.questions.map((q) => (
             <details key={q.question} className="mb-2 rounded-md border border-[#1f2937] p-2">
@@ -89,7 +89,7 @@ export function QuestionsContent() {
       )}
     {/* Si la FAQ ne suffit pas : discussion avec un membre du club */}
       <section className="pt-2 border-t border-[#1f2937]">
-        <h3 className="mb-2 uppercase tracking-widest text-[#22c55e]">Une autre question ?</h3>
+        <h3 className="mb-2 uppercase tracking-widest text-[#CE9DE5]">Une autre question ?</h3>
         <ChatClub />
       </section>
     </div>
