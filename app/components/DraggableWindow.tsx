@@ -49,6 +49,7 @@ export function DraggableWindow({
   children,
 }: Props) {
   const isDark = theme === "dark";
+  const isBracketWindow = id === "bracket" || id === "competition";
   // Fenêtres affichant un PDF plein-bord (sans padding, contenu pleine surface)
   const isPdfWindow = id === "reglement" || id === "formation";
   const downloadInfo =
@@ -213,7 +214,7 @@ export function DraggableWindow({
       <div
         onMouseDown={handleTitlePointerDown}
         onTouchStart={handleTitlePointerDown}
-        className={`h-9 flex flex-shrink-0 items-center justify-between px-3 text-xs select-none border-b ${
+        className={`h-9 flex shrink-0 items-center justify-between px-3 text-xs select-none border-b ${
           isDark
             ? "bg-[#111827] text-[#e5f9f0] border-[#1f2937]"
             : "bg-[#dbe4ef] text-[#0f172a] border-[#b7c2d3]"
@@ -282,10 +283,10 @@ export function DraggableWindow({
           maxHeight: isFullscreen ? undefined : contentH,
           height: isFullscreen ? undefined : resizable ? contentH : undefined,
           flex: isFullscreen ? 1 : undefined,
-          minHeight: isFullscreen ? 0 : undefined,
+          minHeight: isFullscreen || isBracketWindow ? 0 : undefined,
           position: "relative",
         }}
-        className={`${id === "liens" ? "p-0 bg-black" : isPdfWindow ? "p-0" : "p-4"} text-sm ${id === "liens" ? "" : isPdfWindow ? "overflow-hidden flex flex-col [&>*]:flex-1" : `overflow-y-auto ${resizable || isFullscreen ? "flex flex-col [&>*]:flex-1" : ""}`} ${isDark ? "text-slate-200" : "text-slate-800"}`}
+        className={`${id === "liens" ? "p-0 bg-black" : isPdfWindow ? "p-0" : "p-4"} text-sm ${id === "liens" ? "" : isPdfWindow ? "overflow-hidden flex flex-col *:flex-1" : isBracketWindow ? "bracket-window-content flex flex-col *:flex-1" : `overflow-y-auto ${resizable || isFullscreen ? "flex flex-col *:flex-1" : ""}`} ${isDark ? "text-slate-200" : "text-slate-800"}`}
       >
         {children}
       </div>

@@ -66,7 +66,7 @@ export function QuestionsContent() {
         placeholder="Chercher une question…"
         value={recherche}
         onChange={(e) => setRecherche(e.target.value)}
-        className="w-full rounded-md bg-[#020617] border border-[#1f2937] px-2 py-1 text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#22c55e]"
+        className="w-full rounded-md bg-[#020617] border border-[#1f2937] px-2 py-1 text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#CE9DE5]"
       />
 
       {/* Questions par catégorie */}
