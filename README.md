@@ -1,8 +1,6 @@
 # Projet Fil-Rouge - Messagerie OCTOBOTS
 
-Projet du cours 8WEB101 à l'UQAC.
-
-On a ajouté une messagerie au site du club de robotique de l'UQAC, qui organise la compétition de robots OCTOBOTS. Les visiteurs peuvent poser leurs questions au club directement sur le site.
+On a ajouté une messagerie au site du club de robotique de l'UQAC (https://cruqac.ca/), qui organise la compétition de robots OCTOBOTS. Les visiteurs peuvent poser leurs questions au club directement sur le site.
 
 ## Site en ligne
 

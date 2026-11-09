@@ -12,15 +12,15 @@ const categories = [
     questions: [
       {
         question: "Comment devenir membre du club ?",
-        reponse: "Présentez-vous à une rencontre du club ou écrivez à un responsable avec le chat ci-dessous.",
+        reponse: "Présentez-vous à une rencontre du club ou écrivez à un responsable ci-dessous",
       },
       {
-        question: "Faut-il savoir programmer pour participer ?",
-        reponse: "Non. Le club offre des formations où les débutants apprennent à construire leur premier robot.",
+        question: "Où se trouve le local du club ?",
+        reponse: "Au deuxème étage de l'UQAC, au P2-2100",
       },
       {
-        question: "Qu'est-ce qu'un combat de style sumo ?",
-        reponse: "Deux robots s'affrontent dans une arène : le but est de pousser l'adversaire hors du cercle, sans chercher à le détruire.",
+        question: "Faut-il connaître la robotique pour participer ?",
+        reponse: "Non. Le club offre des formations où les débutants apprennent à construire leur premier robot",
       },
     ],
   },
@@ -28,13 +28,18 @@ const categories = [
     titre: "La compétition",
     questions: [
       {
-        question: "Comment inscrire mon équipe ?",
-        reponse: "Ouvrez la fenêtre « Inscriptions » sur le bureau et remplissez le formulaire.",
+        question: "Qu'est-ce qu'un combat de style sumo ?",
+        reponse: "Deux robots s'affrontent dans une arène avec le but de pousser l'adversaire hors du cercle, sans chercher à le détruire.",
       },
       {
-        question: "Où voir les combats en direct ?",
-        reponse: "Ouvrez la fenêtre « Streaming » sur le bureau pendant la compétition.",
+        question: "Comment inscrire mon équipe ?",
+        reponse: "Ouvrez la fenêtre « Inscriptions » et remplissez le formulaire Pilote.",
       },
+      {
+        question: "Quand sera le prochain combat de robots ?",
+        reponse: "La prochaine compétition OCTOBOTS aura lieu le 2 avril 2027",
+      },
+      
     ],
   },
 ];

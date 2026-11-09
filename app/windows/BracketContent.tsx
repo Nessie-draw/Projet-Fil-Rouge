@@ -17,6 +17,10 @@ function svgPath(sx: number, sy: number, tx: number, ty: number): string {
   return `M ${right} ${sy + CARD_H / 2} H ${mid} V ${ty + CARD_H / 2} H ${tx}`;
 }
 
+function isByeMatch(match: Match): boolean {
+  return !match.team1 || !match.team2;
+}
+
 function computeWBY(winners: Match[][]): number[][] {
   const pos: number[][] = [winners[0].map((_, i) => i * SLOT)];
   for (let r = 1; r < winners.length; r++) {
@@ -120,6 +124,9 @@ export function BracketContent() {
   const wbPaths: string[] = [];
   for (let r = 0; r < tournament.winners.length - 1; r++) {
     for (let i = 0; i < tournament.winners[r].length; i++) {
+      const source = tournament.winners[r][i];
+      const target = tournament.winners[r + 1][Math.floor(i / 2)];
+      if (isByeMatch(source) || isByeMatch(target)) continue;
       wbPaths.push(svgPath(PAD + r * R_GAP, wbY[r][i], PAD + (r + 1) * R_GAP, wbY[r + 1][Math.floor(i / 2)]));
     }
   }
@@ -129,6 +136,9 @@ export function BracketContent() {
   for (let r = 0; r < tournament.losers.length - 1; r++) {
     for (let i = 0; i < tournament.losers[r].length; i++) {
       const tgtI = r % 2 === 0 ? i : Math.floor(i / 2);
+      const source = tournament.losers[r][i];
+      const target = tournament.losers[r + 1][tgtI];
+      if (isByeMatch(source) || isByeMatch(target)) continue;
       lbPaths.push(svgPath(PAD + r * R_GAP, lbY[r][i], PAD + (r + 1) * R_GAP, lbY[r + 1][tgtI]));
     }
   }
@@ -155,7 +165,7 @@ export function BracketContent() {
             <svg className="bracket-lines" viewBox={`0 0 ${wbW} ${wbH}`}>
               {wbPaths.map((d, i) => <path key={i} d={d} className="bracket-line-path" />)}
             </svg>
-            {tournament.winners.map((round, r) => round.map((m, i) => (
+            {tournament.winners.map((round, r) => round.map((m, i) => isByeMatch(m) ? null : (
               <div key={m.id} className="bracket-node" style={{ left: PAD + r * R_GAP, top: wbY[r][i] }}>
                 <MatchCard match={m} />
               </div>
@@ -176,7 +186,7 @@ export function BracketContent() {
               <svg className="bracket-lines" viewBox={`0 0 ${lbW} ${lbH}`}>
                 {lbPaths.map((d, i) => <path key={i} d={d} className="bracket-line-path" />)}
               </svg>
-              {tournament.losers.map((round, r) => round.map((m, i) => (
+              {tournament.losers.map((round, r) => round.map((m, i) => isByeMatch(m) ? null : (
                 <div key={m.id} className="bracket-node" style={{ left: PAD + r * R_GAP, top: lbY[r][i] }}>
                   <MatchCard match={m} />
                 </div>
@@ -187,13 +197,15 @@ export function BracketContent() {
 
         {/* ── Grande Finale + Champion ── */}
         <div className="mb-4">
-          <h3 className="text-xs font-bold text-[#CE9DE5] uppercase tracking-widest mb-2 ml-6">Grande Finale</h3>
+          {!isByeMatch(tournament.grandFinal) && <h3 className="text-xs font-bold text-[#CE9DE5] uppercase tracking-widest mb-2 ml-6">Grande Finale</h3>}
           <div style={{ display: "flex", alignItems: "center", paddingLeft: PAD }}>
-            <div>
-              <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>
-              <MatchCard match={tournament.grandFinal} />
-            </div>
-            <div className="bracket-final-connector" aria-hidden="true" />
+            {!isByeMatch(tournament.grandFinal) && <>
+              <div>
+                <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>
+                <MatchCard match={tournament.grandFinal} />
+              </div>
+              <div className="bracket-final-connector" aria-hidden="true" />
+            </>}
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Champion</div>
               <div className={`bracket-vainqueur ${champion ? "bracket-vainqueur--won" : ""}`}>

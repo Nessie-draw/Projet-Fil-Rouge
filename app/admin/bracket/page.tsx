@@ -18,6 +18,10 @@ function svgPath(sx: number, sy: number, tx: number, ty: number): string {
   return `M ${right} ${sy + CARD_H / 2} H ${mid} V ${ty + CARD_H / 2} H ${tx}`;
 }
 
+function isByeMatch(match: Match): boolean {
+  return !match.team1 || !match.team2;
+}
+
 // ── Y-position calculators ───────────────────────────────────────────────────
 function computeWBY(winners: Match[][]): number[][] {
   const pos: number[][] = [winners[0].map((_, i) => i * SLOT)];
@@ -113,7 +117,7 @@ export default function AdminBracketPage() {
   useEffect(() => { void loadBracket(); }, []);
 
   if (loading) return <div className="min-h-screen bg-[#020617] flex items-center justify-center text-slate-400 text-sm">Chargement…</div>;
-  if (error)   return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><div className="p-4 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded">{error}</div></div>;
+  if (error)   return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><div className="p-4 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded-none">{error}</div></div>;
   if (!tournament) return null;
 
   // ── Positions & dimensions ──
@@ -131,6 +135,9 @@ export default function AdminBracketPage() {
   const wbPaths: string[] = [];
   for (let r = 0; r < tournament.winners.length - 1; r++) {
     for (let i = 0; i < tournament.winners[r].length; i++) {
+      const source = tournament.winners[r][i];
+      const target = tournament.winners[r + 1][Math.floor(i / 2)];
+      if (isByeMatch(source) || isByeMatch(target)) continue;
       wbPaths.push(svgPath(PAD + r * R_GAP, wbY[r][i], PAD + (r + 1) * R_GAP, wbY[r + 1][Math.floor(i / 2)]));
     }
   }
@@ -139,6 +146,9 @@ export default function AdminBracketPage() {
   for (let r = 0; r < tournament.losers.length - 1; r++) {
     for (let i = 0; i < tournament.losers[r].length; i++) {
       const tgtI = r % 2 === 0 ? i : Math.floor(i / 2);
+      const source = tournament.losers[r][i];
+      const target = tournament.losers[r + 1][tgtI];
+      if (isByeMatch(source) || isByeMatch(target)) continue;
       lbPaths.push(svgPath(PAD + r * R_GAP, lbY[r][i], PAD + (r + 1) * R_GAP, lbY[r + 1][tgtI]));
     }
   }
@@ -149,26 +159,27 @@ export default function AdminBracketPage() {
   const lbLabels = tournament.losers.map((_, r) => r === tournament.losers.length - 1 ? "Finale L" : `R${r + 1}`);
 
   return (
-    <div className="min-h-screen bg-[#020617] p-6">
+    <div className="h-dvh overflow-hidden bg-[#020617] p-3 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 shrink-0">
         <div>
-          <h1 className="text-sm font-bold text-[#22c55e] uppercase tracking-widest">Admin · Double Élimination</h1>
+          <h1 className="text-sm font-bold text-[#B1D8E9] uppercase tracking-widest">Admin · Double Élimination</h1>
           <p className="text-[10px] text-slate-500 mt-0.5">Cliquez sur une équipe pour la désigner vainqueure (recliquez pour annuler)</p>
         </div>
         <div className="flex gap-3">
           {saving && <span className="text-xs text-slate-400 self-center">Sauvegarde…</span>}
-          <button onClick={resetTournament} className="px-4 py-2 text-xs bg-red-900/40 hover:bg-red-800/50 border border-red-800 text-red-400 rounded transition">Réinitialiser</button>
-          <Link href="/admin/equipes" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded transition">Équipes</Link>
-          <Link href="/" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded transition">← Site public</Link>
-          <button onClick={handleLogout} className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-400 hover:text-red-400 rounded transition">Déconnexion</button>
+          <button onClick={resetTournament} className="px-4 py-2 text-xs bg-red-900/40 hover:bg-red-800/50 border border-red-800 text-red-400 rounded-none transition">Réinitialiser</button>
+          <Link href="/admin/equipes" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">Équipes</Link>
+          <Link href="/admin/messages" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">Messages</Link>
+          <Link href="/" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">← Site public</Link>
+          <button onClick={handleLogout} className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-400 hover:text-red-400 rounded-none transition">Déconnexion</button>
         </div>
       </div>
 
-      <div className="bracket-scroll">
+      <div className="bracket-scroll min-h-0 flex-1" style={{ overflow: "scroll" }}>
         {/* ── Winners Bracket ── */}
         <div className="mb-8">
-          <h2 className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-2">Winners Bracket</h2>
+          <h2 className="text-xs font-bold text-[#B1D8E9] uppercase tracking-widest mb-2">Winners Bracket</h2>
           <div style={{ display: "flex", paddingLeft: PAD, marginBottom: 6 }}>
             {wbLabels.map((l, r) => (
               <div key={r} className="bracket-round-label" style={{ width: CARD_W, marginRight: r < wbLabels.length - 1 ? R_GAP - CARD_W : 0, flexShrink: 0 }}>{l}</div>
@@ -178,7 +189,7 @@ export default function AdminBracketPage() {
             <svg className="bracket-lines" viewBox={`0 0 ${wbW} ${wbH}`}>
               {wbPaths.map((d, i) => <path key={i} d={d} className="bracket-line-path" />)}
             </svg>
-            {tournament.winners.map((round, r) => round.map((m, i) => (
+            {tournament.winners.map((round, r) => round.map((m, i) => isByeMatch(m) ? null : (
               <div key={m.id} className="bracket-node" style={{ left: PAD + r * R_GAP, top: wbY[r][i] }}>
                 <MatchCard match={m} onSelect={w => handleSelect(m.id, w)} />
               </div>
@@ -189,7 +200,7 @@ export default function AdminBracketPage() {
         {/* ── Losers Bracket ── */}
         {hasLB && (
           <div className="mb-8">
-            <h2 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-2">Losers Bracket</h2>
+            <h2 className="text-xs font-bold text-[#B1D8E9] uppercase tracking-widest mb-2">Losers Bracket</h2>
             <div style={{ display: "flex", paddingLeft: PAD, marginBottom: 6 }}>
               {lbLabels.map((l, r) => (
                 <div key={r} className="bracket-round-label" style={{ width: CARD_W, marginRight: r < lbLabels.length - 1 ? R_GAP - CARD_W : 0, flexShrink: 0 }}>{l}</div>
@@ -199,7 +210,7 @@ export default function AdminBracketPage() {
               <svg className="bracket-lines" viewBox={`0 0 ${lbW} ${lbH}`}>
                 {lbPaths.map((d, i) => <path key={i} d={d} className="bracket-line-path" />)}
               </svg>
-              {tournament.losers.map((round, r) => round.map((m, i) => (
+              {tournament.losers.map((round, r) => round.map((m, i) => isByeMatch(m) ? null : (
                 <div key={m.id} className="bracket-node" style={{ left: PAD + r * R_GAP, top: lbY[r][i] }}>
                   <MatchCard match={m} onSelect={w => handleSelect(m.id, w)} />
                 </div>
@@ -210,13 +221,15 @@ export default function AdminBracketPage() {
 
         {/* ── Grande Finale + Champion ── */}
         <div className="mb-8">
-          <h2 className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">Grande Finale</h2>
+          {!isByeMatch(tournament.grandFinal) && <h2 className="text-xs font-bold text-[#B1D8E9] uppercase tracking-widest mb-2">Grande Finale</h2>}
           <div style={{ display: "flex", alignItems: "center" }}>
-            <div>
-              <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>
-              <MatchCard match={tournament.grandFinal} onSelect={w => handleSelect("gf", w)} />
-            </div>
-            <div className="bracket-final-connector" aria-hidden="true" />
+            {!isByeMatch(tournament.grandFinal) && <>
+              <div>
+                <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>
+                <MatchCard match={tournament.grandFinal} onSelect={w => handleSelect("gf", w)} />
+              </div>
+              <div className="bracket-final-connector" aria-hidden="true" />
+            </>}
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Champion</div>
               <div className={`bracket-vainqueur ${champion ? "bracket-vainqueur--won" : ""}`}>

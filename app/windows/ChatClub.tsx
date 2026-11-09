@@ -25,31 +25,12 @@ async function lireMessages(courriel: string): Promise<Message[]> {
   return reponse.ok ? reponse.json() : [];
 }
 
-// Notification sonore : un petit « bip » créé avec l'API Web Audio (pas besoin de fichier son)
-function jouerSon() {
-  try {
-    const audio = new AudioContext();
-    const oscillateur = audio.createOscillator();
-    oscillateur.frequency.value = 880; // note aiguë
-    oscillateur.connect(audio.destination);
-    oscillateur.start();
-    oscillateur.stop(audio.currentTime + 0.2); // le son dure 0,2 seconde
-  } catch {
-    // son impossible (navigateur trop ancien) : pas grave
-  }
-}
-
-// Compte les réponses du club dans une liste de messages
-function compterReponses(liste: Message[]) {
-  return liste.filter((m) => m.auteur === "club").length;
-}
-
 // Clé utilisée pour garder le visiteur connecté dans le navigateur (localStorage)
 const CLE_VISITEUR = "chat-visiteur";
 
 // Style commun des champs de texte (le même que la fenêtre Inscriptions)
 const styleChamp =
-  "w-full rounded-md bg-[#020617] border border-[#1f2937] px-2 py-1 text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#22c55e]";
+  "w-full rounded-md bg-[#020617] border border-[#1f2937] px-2 py-1 text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#B1D8E9]";
 
 export function ChatClub() {
   // Étape affichée : d'abord le formulaire, ensuite le chat
@@ -59,28 +40,11 @@ export function ChatClub() {
   const [texte, setTexte] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [erreur, setErreur] = useState("");
-  // Bandeau visible quand le club vient de répondre
+  const [envoiEnCours, setEnvoiEnCours] = useState(false);
   const [nouvelleReponse, setNouvelleReponse] = useState(false);
-  // Nombre de réponses du club déjà vues (pour savoir s'il y en a une nouvelle)
-  const reponsesVues = useRef(0);
-
-  // Notification visuelle et sonore quand une nouvelle réponse du club arrive
-  const notifier = () => {
-    jouerSon();
-    setNouvelleReponse(true);
-    // Si l'onglet n'est pas regardé, on change son titre pour attirer l'œil
-    if (document.hidden) document.title = "💬 Nouvelle réponse du club";
-  };
-
-  // Quand on revient sur l'onglet, on remet le titre normal
-  useEffect(() => {
-    const titreNormal = document.title;
-    const auRetour = () => {
-      if (!document.hidden) document.title = titreNormal;
-    };
-    document.addEventListener("visibilitychange", auRetour);
-    return () => document.removeEventListener("visibilitychange", auRetour);
-  }, []);
+  const dernierMessageClubId = useRef(0);
+  const messagesListRef = useRef<HTMLOListElement | null>(null);
+  const dernierMessageId = messages[messages.length - 1]?.id;
 
   // À l'ouverture : si le visiteur s'est déjà présenté, on le reconnecte directement
   useEffect(() => {
@@ -93,7 +57,10 @@ export function ChatClub() {
         setNom(visiteur.nom);
         setCourriel(visiteur.courriel);
         setMessages(liste);
-        reponsesVues.current = compterReponses(liste);
+        dernierMessageClubId.current = Math.max(
+          0,
+          ...liste.filter((message) => message.auteur === "club").map((message) => message.id),
+        );
         setEtape("chat");
       });
     } catch {
@@ -107,14 +74,28 @@ export function ChatClub() {
     if (etape !== "chat") return;
     const intervalle = setInterval(async () => {
       const liste = await lireMessages(courriel);
-      // Plus de réponses du club qu'avant ? C'est une nouvelle réponse : on notifie
-      const reponses = compterReponses(liste);
-      if (reponses > reponsesVues.current) notifier();
-      reponsesVues.current = reponses;
+      const nouvellesReponses = liste.filter(
+        (message) => message.auteur === "club" && message.id > dernierMessageClubId.current,
+      );
+      if (nouvellesReponses.length > 0) setNouvelleReponse(true);
+
+      const dernierId = Math.max(
+        0,
+        ...liste.filter((message) => message.auteur === "club").map((message) => message.id),
+      );
+      if (liste.length > 0) {
+        dernierMessageClubId.current = Math.max(dernierMessageClubId.current, dernierId);
+      }
       setMessages(liste);
     }, 5000);
     return () => clearInterval(intervalle); // on arrête quand la fenêtre se ferme
   }, [etape, courriel]);
+
+  useEffect(() => {
+    const liste = messagesListRef.current;
+    if (!liste || dernierMessageId === undefined) return;
+    liste.scrollTo({ top: liste.scrollHeight, behavior: "smooth" });
+  }, [dernierMessageId]);
 
   // Formulaire nom/courriel validé : on charge l'historique, puis on passe au chat
   const commencerChat = async (e: React.FormEvent) => {
@@ -127,31 +108,46 @@ export function ChatClub() {
     }
     const liste = await lireMessages(courriel);
     setMessages(liste);
-    reponsesVues.current = compterReponses(liste);
+    dernierMessageClubId.current = Math.max(
+      0,
+      ...liste.filter((message) => message.auteur === "club").map((message) => message.id),
+    );
+    setNouvelleReponse(false);
     setEtape("chat");
   };
 
   // Envoi d'un message : on l'enregistre dans la base avec la route API
   const envoyerMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (texte.trim() === "") return; // on ignore les messages vides
+    if (texte.trim() === "" || envoiEnCours) return; // on ignore les messages vides ou déjà en cours
     setErreur("");
+    setEnvoiEnCours(true);
 
-    const reponse = await fetch("/api/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nom, courriel, texte }),
-    });
-    const resultat = await reponse.json();
+    try {
+      const reponse = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nom, courriel, texte }),
+      });
+      const resultat = await reponse.json().catch(() => null);
 
-    if (!reponse.ok) {
-      setErreur(resultat.error || "Le message n'a pas pu être envoyé.");
-      return;
+      if (!reponse.ok) {
+        setErreur(resultat?.error || "Le message n'a pas pu être envoyé.");
+        return;
+      }
+      if (!resultat) {
+        setErreur("Réponse invalide du serveur. Réessayez.");
+        return;
+      }
+
+      // Le message enregistré (avec son heure) est ajouté à la fin de la liste
+      setMessages((messagesActuels) => [...messagesActuels, resultat]);
+      setTexte("");
+    } catch {
+      setErreur("Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.");
+    } finally {
+      setEnvoiEnCours(false);
     }
-
-    // Le message enregistré (avec son heure) est ajouté à la fin de la liste
-    setMessages([...messages, resultat]);
-    setTexte("");
   };
 
   // Déconnexion : on oublie le visiteur et on revient au formulaire
@@ -164,7 +160,7 @@ export function ChatClub() {
     setNom("");
     setCourriel("");
     setMessages([]);
-    reponsesVues.current = 0;
+    dernierMessageClubId.current = 0;
     setNouvelleReponse(false);
     setEtape("formulaire");
   };
@@ -183,7 +179,7 @@ export function ChatClub() {
 
         <button
           type="submit"
-          className="px-4 py-2 rounded-lg bg-[#22c55e] text-[11px] font-semibold text-[#020617] hover:bg-[#16a34a] transition"
+          className="px-4 py-2 rounded-lg bg-[#B1D8E9] text-[11px] font-semibold text-[#020617] hover:bg-[#CE9DE5] transition"
         >
           Commencer la discussion
         </button>
@@ -202,7 +198,7 @@ export function ChatClub() {
         </button>
       </div>
 
-      <ol className="space-y-2 max-h-48 overflow-y-auto">
+      <ol ref={messagesListRef} className="space-y-2 max-h-48 overflow-y-auto">
         {/* Message de bienvenue (affiché seulement, pas enregistré) */}
         <li className="flex">
           <div className="max-w-[75%] rounded-lg px-3 py-2 bg-[#1f2937]">
@@ -213,7 +209,7 @@ export function ChatClub() {
         {/* Messages enregistrés : les nôtres à droite, ceux du club à gauche */}
         {messages.map((m) => (
           <li key={m.id} className={m.auteur === "visiteur" ? "flex justify-end" : "flex"}>
-            <div className={`max-w-[75%] rounded-lg px-3 py-2 ${m.auteur === "visiteur" ? "bg-[#1d4ed8]" : "bg-[#1f2937]"}`}>
+            <div className={`max-w-[75%] rounded-lg px-3 py-2 ${m.auteur === "visiteur" ? "bg-[#64748b]" : "bg-[#1f2937]"}`}>
               <p>{m.texte}</p>
               <time className="block text-[10px] opacity-60">{formaterHeure(m.created_at)}</time>
             </div>
@@ -221,14 +217,14 @@ export function ChatClub() {
         ))}
       </ol>
 
-      {/* Notification visuelle : bandeau quand le club a répondu (clic pour le fermer) */}
       {nouvelleReponse && (
         <button
           type="button"
+          aria-live="polite"
           onClick={() => setNouvelleReponse(false)}
           className="w-full rounded-md bg-[#CE9DE5] px-2 py-1 text-left font-semibold text-[#020617]"
         >
-          💬 Le club vous a répondu ! (cliquer pour fermer)
+          Le club vous a répondu. Cliquez pour fermer.
         </button>
       )}
 
@@ -245,8 +241,8 @@ export function ChatClub() {
           onChange={(e) => setTexte(e.target.value)}
           className={`${styleChamp} min-w-0`}
         />
-        <button type="submit" className="shrink-0 px-3 rounded-lg bg-[#CE9DE5] text-[11px] font-semibold text-[#020617] hover:bg-[#B984D4] transition">
-          Envoyer
+        <button type="submit" disabled={envoiEnCours || texte.trim() === ""} className="shrink-0 px-3 rounded-lg bg-[#B984D4] text-[11px] font-semibold text-[#020617] hover:bg-[#B1D8E9] transition disabled:cursor-not-allowed disabled:opacity-100">
+          {envoiEnCours ? "Envoi…" : "Envoyer"}
         </button>
       </form>
     </div>

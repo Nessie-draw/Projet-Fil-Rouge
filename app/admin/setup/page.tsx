@@ -39,7 +39,7 @@ export default function SetupPage() {
   return (
     <div className="min-h-screen bg-[#020617] flex items-center justify-center p-8">
       <div className="w-full max-w-sm bg-[#0a0f1a] border border-[#1e293b] rounded-xl p-8">
-        <h1 className="text-lg font-bold text-[#22c55e] mb-1 uppercase tracking-widest">Configuration initiale</h1>
+        <h1 className="text-lg font-bold text-[#CE9DE5] mb-1 uppercase tracking-widest">Configuration initiale</h1>
         <p className="text-slate-500 text-xs mb-6">Créez le compte administrateur unique</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -51,7 +51,7 @@ export default function SetupPage() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="admin@example.com"
-              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#22c55e]"
+              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#B1D8E9]"
             />
           </div>
           <div>
@@ -62,7 +62,7 @@ export default function SetupPage() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Min. 8 caractères"
-              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#22c55e]"
+              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#B1D8E9]"
             />
           </div>
           <div>
@@ -73,7 +73,7 @@ export default function SetupPage() {
               value={confirm}
               onChange={e => setConfirm(e.target.value)}
               placeholder="Répétez le mot de passe"
-              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#22c55e]"
+              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#B1D8E9]"
             />
           </div>
 
@@ -84,7 +84,7 @@ export default function SetupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#22c55e] hover:bg-[#16a34a] disabled:bg-slate-700 disabled:text-slate-500 text-[#020617] font-bold text-sm rounded-lg transition"
+            className="w-full py-3 bg-[#CE9DE5] hover:bg-[#B1D8E9] disabled:bg-slate-700 disabled:text-slate-500 text-[#020617] font-bold text-sm rounded-lg transition"
           >
             {loading ? "Création en cours…" : "Créer le compte administrateur"}
           </button>
