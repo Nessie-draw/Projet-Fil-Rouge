@@ -202,7 +202,7 @@ export function ChatClub() {
         {/* Message de bienvenue (affiché seulement, pas enregistré) */}
         <li className="flex">
           <div className="max-w-[75%] rounded-lg px-3 py-2 bg-[#1f2937]">
-            <p>Bonjour {nom} ! Écrivez votre question : un membre du club vous répondra ici ou à {courriel}.</p>
+           <p>Bonjour {nom} ! Écrivez votre question : un membre du club vous répondra ici. Revenez plus tard sur le site pour voir sa réponse.</p>
           </div>
         </li>
 
