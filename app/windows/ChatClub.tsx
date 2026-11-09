@@ -2,7 +2,7 @@
 // Chat avec le club : formulaire nom/courriel, puis discussion enregistrée dans la base
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Un message tel que renvoyé par la route /api/messages
 type Message = {
@@ -25,6 +25,25 @@ async function lireMessages(courriel: string): Promise<Message[]> {
   return reponse.ok ? reponse.json() : [];
 }
 
+// Notification sonore : un petit « bip » créé avec l'API Web Audio (pas besoin de fichier son)
+function jouerSon() {
+  try {
+    const audio = new AudioContext();
+    const oscillateur = audio.createOscillator();
+    oscillateur.frequency.value = 880; // note aiguë
+    oscillateur.connect(audio.destination);
+    oscillateur.start();
+    oscillateur.stop(audio.currentTime + 0.2); // le son dure 0,2 seconde
+  } catch {
+    // son impossible (navigateur trop ancien) : pas grave
+  }
+}
+
+// Compte les réponses du club dans une liste de messages
+function compterReponses(liste: Message[]) {
+  return liste.filter((m) => m.auteur === "club").length;
+}
+
 // Clé utilisée pour garder le visiteur connecté dans le navigateur (localStorage)
 const CLE_VISITEUR = "chat-visiteur";
 
@@ -40,6 +59,28 @@ export function ChatClub() {
   const [texte, setTexte] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [erreur, setErreur] = useState("");
+  // Bandeau visible quand le club vient de répondre
+  const [nouvelleReponse, setNouvelleReponse] = useState(false);
+  // Nombre de réponses du club déjà vues (pour savoir s'il y en a une nouvelle)
+  const reponsesVues = useRef(0);
+
+  // Notification visuelle et sonore quand une nouvelle réponse du club arrive
+  const notifier = () => {
+    jouerSon();
+    setNouvelleReponse(true);
+    // Si l'onglet n'est pas regardé, on change son titre pour attirer l'œil
+    if (document.hidden) document.title = "💬 Nouvelle réponse du club";
+  };
+
+  // Quand on revient sur l'onglet, on remet le titre normal
+  useEffect(() => {
+    const titreNormal = document.title;
+    const auRetour = () => {
+      if (!document.hidden) document.title = titreNormal;
+    };
+    document.addEventListener("visibilitychange", auRetour);
+    return () => document.removeEventListener("visibilitychange", auRetour);
+  }, []);
 
   // À l'ouverture : si le visiteur s'est déjà présenté, on le reconnecte directement
   useEffect(() => {
@@ -52,6 +93,7 @@ export function ChatClub() {
         setNom(visiteur.nom);
         setCourriel(visiteur.courriel);
         setMessages(liste);
+        reponsesVues.current = compterReponses(liste);
         setEtape("chat");
       });
     } catch {
@@ -64,7 +106,12 @@ export function ChatClub() {
   useEffect(() => {
     if (etape !== "chat") return;
     const intervalle = setInterval(async () => {
-      setMessages(await lireMessages(courriel));
+      const liste = await lireMessages(courriel);
+      // Plus de réponses du club qu'avant ? C'est une nouvelle réponse : on notifie
+      const reponses = compterReponses(liste);
+      if (reponses > reponsesVues.current) notifier();
+      reponsesVues.current = reponses;
+      setMessages(liste);
     }, 5000);
     return () => clearInterval(intervalle); // on arrête quand la fenêtre se ferme
   }, [etape, courriel]);
@@ -78,7 +125,9 @@ export function ChatClub() {
     } catch {
       // Pas grave si ça échoue : le chat fonctionne quand même
     }
-    setMessages(await lireMessages(courriel));
+    const liste = await lireMessages(courriel);
+    setMessages(liste);
+    reponsesVues.current = compterReponses(liste);
     setEtape("chat");
   };
 
@@ -115,6 +164,8 @@ export function ChatClub() {
     setNom("");
     setCourriel("");
     setMessages([]);
+    reponsesVues.current = 0;
+    setNouvelleReponse(false);
     setEtape("formulaire");
   };
 
@@ -169,6 +220,17 @@ export function ChatClub() {
           </li>
         ))}
       </ol>
+
+      {/* Notification visuelle : bandeau quand le club a répondu (clic pour le fermer) */}
+      {nouvelleReponse && (
+        <button
+          type="button"
+          onClick={() => setNouvelleReponse(false)}
+          className="w-full rounded-md bg-[#CE9DE5] px-2 py-1 text-left font-semibold text-[#020617]"
+        >
+          💬 Le club vous a répondu ! (cliquer pour fermer)
+        </button>
+      )}
 
       {/* Message d'erreur si l'envoi échoue */}
       {erreur && <p className="text-red-400">{erreur}</p>}
