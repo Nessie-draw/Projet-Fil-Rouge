@@ -132,7 +132,7 @@ export function ChatClub() {
 
         <button
           type="submit"
-          className="px-4 py-2 rounded-lg bg-[#22c55e] text-[11px] font-semibold text-[#020617] hover:bg-[#16a34a] transition"
+          className="px-4 py-2 rounded-lg bg-[#B1D8E9] text-[11px] font-semibold text-[#020617] hover:bg-[#16a34a] transition"
         >
           Commencer la discussion
         </button>

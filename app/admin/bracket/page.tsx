@@ -113,7 +113,7 @@ export default function AdminBracketPage() {
   useEffect(() => { void loadBracket(); }, []);
 
   if (loading) return <div className="min-h-screen bg-[#020617] flex items-center justify-center text-slate-400 text-sm">Chargement…</div>;
-  if (error)   return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><div className="p-4 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded">{error}</div></div>;
+  if (error)   return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><div className="p-4 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded-none">{error}</div></div>;
   if (!tournament) return null;
 
   // ── Positions & dimensions ──
@@ -158,10 +158,10 @@ export default function AdminBracketPage() {
         </div>
         <div className="flex gap-3">
           {saving && <span className="text-xs text-slate-400 self-center">Sauvegarde…</span>}
-          <button onClick={resetTournament} className="px-4 py-2 text-xs bg-red-900/40 hover:bg-red-800/50 border border-red-800 text-red-400 rounded transition">Réinitialiser</button>
-          <Link href="/admin/equipes" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded transition">Équipes</Link>
-          <Link href="/" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded transition">← Site public</Link>
-          <button onClick={handleLogout} className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-400 hover:text-red-400 rounded transition">Déconnexion</button>
+          <button onClick={resetTournament} className="px-4 py-2 text-xs bg-red-900/40 hover:bg-red-800/50 border border-red-800 text-red-400 rounded-none transition">Réinitialiser</button>
+          <Link href="/admin/equipes" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">Équipes</Link>
+          <Link href="/" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">← Site public</Link>
+          <button onClick={handleLogout} className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-400 hover:text-red-400 rounded-none transition">Déconnexion</button>
         </div>
       </div>
 

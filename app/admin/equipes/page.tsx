@@ -101,7 +101,7 @@ export default function AdminEquipesPage() {
   useEffect(() => { void loadEquipes(); }, []);
 
   if (loading) return <div className="min-h-screen bg-[#020617] flex items-center justify-center text-slate-400 text-sm">Chargement…</div>;
-  if (error) return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><div className="p-4 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded">{error}</div></div>;
+  if (error) return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><div className="p-4 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded-none">{error}</div></div>;
 
   return (
     <div className="h-dvh overflow-hidden bg-[#020617] p-2 flex flex-col">
@@ -112,18 +112,18 @@ export default function AdminEquipesPage() {
           <p className="text-[10px] text-slate-500 mt-0.5">{equipes.length} équipe{equipes.length > 1 ? "s" : ""} inscrite{equipes.length > 1 ? "s" : ""}</p>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 text-xs bg-[#CE9DE5]/15 hover:bg-[#CE9DE5]/25 border border-[#CE9DE5]/50 text-[#CE9DE5] rounded transition">
+          <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 text-xs bg-[#CE9DE5]/15 hover:bg-[#CE9DE5]/25 border border-[#CE9DE5]/50 text-[#CE9DE5] rounded-none transition">
             {showForm ? "Annuler" : "+ Ajouter"}
           </button>
-          <Link href="/admin/bracket" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded transition">Bracket</Link>
-          <Link href="/" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded transition">← Site public</Link>
-          <button onClick={handleLogout} className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-400 hover:text-red-400 rounded transition">Déconnexion</button>
+          <Link href="/admin/bracket" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">Bracket</Link>
+          <Link href="/" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">← Site public</Link>
+          <button onClick={handleLogout} className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-400 hover:text-red-400 rounded-none transition">Déconnexion</button>
         </div>
       </div>
 
       {/* Formulaire d'ajout */}
       {showForm && (
-        <form onSubmit={handleAdd} className="mb-6 p-4 bg-[#0a0f1a] border border-[#1e293b] rounded shrink-0">
+        <form onSubmit={handleAdd} className="mb-6 p-4 bg-[#0a0f1a] border border-[#1e293b] rounded-none shrink-0">
           <h2 className="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Nouvelle équipe</h2>
           <div className="grid grid-cols-2 gap-3">
             <Input label="Prénom *" value={form.prenom} onChange={(v) => setForm({ ...form, prenom: v })} />
@@ -138,7 +138,7 @@ export default function AdminEquipesPage() {
               <select
                 value={form.nombrePilote}
                 onChange={(e) => setForm({ ...form, nombrePilote: e.target.value })}
-                className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded focus:border-[#B1D8E9] outline-none"
+                className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded-none focus:border-[#B1D8E9] outline-none"
               >
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -148,7 +148,7 @@ export default function AdminEquipesPage() {
           <button
             type="submit"
             disabled={saving}
-            className="mt-4 px-6 py-2 text-xs bg-[#CE9DE5] hover:bg-[#B1D8E9] text-[#020617] rounded transition disabled:opacity-50"
+            className="mt-4 px-6 py-2 text-xs bg-[#CE9DE5] hover:bg-[#B1D8E9] text-[#020617] rounded-none transition disabled:opacity-50"
           >
             {saving ? "Enregistrement…" : "Ajouter l'équipe"}
           </button>
@@ -183,7 +183,7 @@ export default function AdminEquipesPage() {
                 <td className="py-3">
                   <button
                     onClick={() => handleDelete(eq.id, eq.nomRobot)}
-                    className="px-3 py-1 text-[10px] bg-red-900/30 hover:bg-red-800/50 border border-red-900 text-red-400 rounded transition"
+                    className="px-3 py-1 text-[10px] bg-red-900/30 hover:bg-red-800/50 border border-red-900 text-red-400 rounded-none transition"
                   >
                     Supprimer
                   </button>
@@ -210,7 +210,7 @@ function Input({ label, value, onChange, type = "text" }: {
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded focus:border-[#B1D8E9] outline-none"
+        className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded-none focus:border-[#B1D8E9] outline-none"
         required={label.includes("*")}
       />
     </div>
