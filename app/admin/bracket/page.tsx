@@ -149,9 +149,9 @@ export default function AdminBracketPage() {
   const lbLabels = tournament.losers.map((_, r) => r === tournament.losers.length - 1 ? "Finale L" : `R${r + 1}`);
 
   return (
-    <div className="min-h-screen bg-[#020617] p-6">
+    <div className="h-dvh overflow-hidden bg-[#020617] p-3 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 shrink-0">
         <div>
           <h1 className="text-sm font-bold text-[#B1D8E9] uppercase tracking-widest">Admin · Double Élimination</h1>
           <p className="text-[10px] text-slate-500 mt-0.5">Cliquez sur une équipe pour la désigner vainqueure (recliquez pour annuler)</p>
@@ -165,7 +165,7 @@ export default function AdminBracketPage() {
         </div>
       </div>
 
-      <div className="bracket-scroll">
+      <div className="bracket-scroll min-h-0 flex-1" style={{ overflow: "scroll" }}>
         {/* ── Winners Bracket ── */}
         <div className="mb-8">
           <h2 className="text-xs font-bold text-[#B1D8E9] uppercase tracking-widest mb-2">Winners Bracket</h2>
