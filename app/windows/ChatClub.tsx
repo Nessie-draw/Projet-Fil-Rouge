@@ -41,6 +41,8 @@ export function ChatClub() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [erreur, setErreur] = useState("");
   const [envoiEnCours, setEnvoiEnCours] = useState(false);
+  const [nouvelleReponse, setNouvelleReponse] = useState(false);
+  const dernierMessageClubId = useRef(0);
   const messagesListRef = useRef<HTMLOListElement | null>(null);
   const dernierMessageId = messages[messages.length - 1]?.id;
 
@@ -55,6 +57,10 @@ export function ChatClub() {
         setNom(visiteur.nom);
         setCourriel(visiteur.courriel);
         setMessages(liste);
+        dernierMessageClubId.current = Math.max(
+          0,
+          ...liste.filter((message) => message.auteur === "club").map((message) => message.id),
+        );
         setEtape("chat");
       });
     } catch {
@@ -67,7 +73,20 @@ export function ChatClub() {
   useEffect(() => {
     if (etape !== "chat") return;
     const intervalle = setInterval(async () => {
-      setMessages(await lireMessages(courriel));
+      const liste = await lireMessages(courriel);
+      const nouvellesReponses = liste.filter(
+        (message) => message.auteur === "club" && message.id > dernierMessageClubId.current,
+      );
+      if (nouvellesReponses.length > 0) setNouvelleReponse(true);
+
+      const dernierId = Math.max(
+        0,
+        ...liste.filter((message) => message.auteur === "club").map((message) => message.id),
+      );
+      if (liste.length > 0) {
+        dernierMessageClubId.current = Math.max(dernierMessageClubId.current, dernierId);
+      }
+      setMessages(liste);
     }, 5000);
     return () => clearInterval(intervalle); // on arrête quand la fenêtre se ferme
   }, [etape, courriel]);
@@ -87,7 +106,13 @@ export function ChatClub() {
     } catch {
       // Pas grave si ça échoue : le chat fonctionne quand même
     }
-    setMessages(await lireMessages(courriel));
+    const liste = await lireMessages(courriel);
+    setMessages(liste);
+    dernierMessageClubId.current = Math.max(
+      0,
+      ...liste.filter((message) => message.auteur === "club").map((message) => message.id),
+    );
+    setNouvelleReponse(false);
     setEtape("chat");
   };
 
@@ -135,6 +160,8 @@ export function ChatClub() {
     setNom("");
     setCourriel("");
     setMessages([]);
+    dernierMessageClubId.current = 0;
+    setNouvelleReponse(false);
     setEtape("formulaire");
   };
 
@@ -189,6 +216,17 @@ export function ChatClub() {
           </li>
         ))}
       </ol>
+
+      {nouvelleReponse && (
+        <button
+          type="button"
+          aria-live="polite"
+          onClick={() => setNouvelleReponse(false)}
+          className="w-full rounded-md bg-[#CE9DE5] px-2 py-1 text-left font-semibold text-[#020617]"
+        >
+          Le club vous a répondu. Cliquez pour fermer.
+        </button>
+      )}
 
       {/* Message d'erreur si l'envoi échoue */}
       {erreur && <p className="text-red-400">{erreur}</p>}
