@@ -99,10 +99,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "ID requis." }, { status: 400 });
     }
 
-    const result = await sql`DELETE FROM inscriptions WHERE id = ${id}`;
-    if (result.length === 0 && !result.command) {
-      // neon returns empty for successful DELETEs
-    }
+    await sql`DELETE FROM inscriptions WHERE id = ${id}`;
 
     return NextResponse.json({ success: true });
   } catch (error) {
