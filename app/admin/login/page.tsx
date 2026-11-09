@@ -37,11 +37,10 @@ function LoginForm() {
   return (
     <div className="min-h-screen bg-[#020617] flex items-center justify-center p-8">
       <div className="w-full max-w-sm bg-[#0a0f1a] border border-[#1e293b] rounded-xl p-8">
-        <h1 className="text-lg font-bold text-[#22c55e] mb-1 uppercase tracking-widest">Administrateur</h1>
-        <p className="text-slate-500 text-xs mb-6">Accès réservé à l&apos;organisateur</p>
+        <h1 className="text-lg font-bold text-[#B1D8E9] mb-1 uppercase tracking-widest">Connexion</h1>
 
         {justSetup && (
-          <div className="mb-4 p-3 bg-green-500/15 border border-green-800 text-green-400 text-xs rounded-lg">
+          <div className="mb-4 p-3 bg-[#CE9DE5]/15 border border-[#CE9DE5]/50 text-[#B1D8E9] text-xs rounded-lg">
             Compte créé avec succès. Vous pouvez maintenant vous connecter.
           </div>
         )}
@@ -54,9 +53,9 @@ function LoginForm() {
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="admin@example.com"
+              placeholder="email@example.com"
               autoComplete="email"
-              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#22c55e]"
+              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#B1D8E9]"
             />
           </div>
           <div>
@@ -67,7 +66,7 @@ function LoginForm() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#22c55e]"
+              className="w-full bg-[#1e293b] border border-[#334155] text-slate-200 text-sm px-4 py-3 rounded-lg outline-none focus:border-[#B1D8E9]"
             />
           </div>
 
@@ -78,7 +77,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-[#22c55e] hover:bg-[#16a34a] disabled:bg-slate-700 disabled:text-slate-500 text-[#020617] font-bold text-sm rounded-lg transition"
+            className="w-full py-3 bg-[#B1D8E9] hover:bg-[#B1D8E9] disabled:bg-slate-700 disabled:text-slate-500 text-[#020617] font-bold text-sm rounded-lg transition"
           >
             {loading ? "Connexion…" : "Se connecter"}
           </button>

@@ -104,15 +104,15 @@ export default function AdminEquipesPage() {
   if (error) return <div className="min-h-screen bg-[#020617] flex items-center justify-center"><div className="p-4 bg-red-500/20 border border-red-500 text-red-300 text-xs rounded">{error}</div></div>;
 
   return (
-    <div className="min-h-screen bg-[#020617] p-6">
+    <div className="h-dvh overflow-hidden bg-[#020617] p-2 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 shrink-0">
         <div>
-          <h1 className="text-sm font-bold text-[#22c55e] uppercase tracking-widest">Admin · Équipes</h1>
+          <h1 className="text-sm font-bold text-[#CE9DE5] uppercase tracking-widest">Admin · Équipes</h1>
           <p className="text-[10px] text-slate-500 mt-0.5">{equipes.length} équipe{equipes.length > 1 ? "s" : ""} inscrite{equipes.length > 1 ? "s" : ""}</p>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 text-xs bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-800 text-emerald-400 rounded transition">
+          <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 text-xs bg-[#CE9DE5]/15 hover:bg-[#CE9DE5]/25 border border-[#CE9DE5]/50 text-[#CE9DE5] rounded transition">
             {showForm ? "Annuler" : "+ Ajouter"}
           </button>
           <Link href="/admin/bracket" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded transition">Bracket</Link>
@@ -123,7 +123,7 @@ export default function AdminEquipesPage() {
 
       {/* Formulaire d'ajout */}
       {showForm && (
-        <form onSubmit={handleAdd} className="mb-6 p-4 bg-[#0a0f1a] border border-[#1e293b] rounded">
+        <form onSubmit={handleAdd} className="mb-6 p-4 bg-[#0a0f1a] border border-[#1e293b] rounded shrink-0">
           <h2 className="text-xs font-bold text-slate-300 uppercase tracking-widest mb-4">Nouvelle équipe</h2>
           <div className="grid grid-cols-2 gap-3">
             <Input label="Prénom *" value={form.prenom} onChange={(v) => setForm({ ...form, prenom: v })} />
@@ -138,7 +138,7 @@ export default function AdminEquipesPage() {
               <select
                 value={form.nombrePilote}
                 onChange={(e) => setForm({ ...form, nombrePilote: e.target.value })}
-                className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded focus:border-emerald-600 outline-none"
+                className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded focus:border-[#B1D8E9] outline-none"
               >
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -148,7 +148,7 @@ export default function AdminEquipesPage() {
           <button
             type="submit"
             disabled={saving}
-            className="mt-4 px-6 py-2 text-xs bg-emerald-600 hover:bg-emerald-500 text-white rounded transition disabled:opacity-50"
+            className="mt-4 px-6 py-2 text-xs bg-[#CE9DE5] hover:bg-[#B1D8E9] text-[#020617] rounded transition disabled:opacity-50"
           >
             {saving ? "Enregistrement…" : "Ajouter l'équipe"}
           </button>
@@ -156,7 +156,7 @@ export default function AdminEquipesPage() {
       )}
 
       {/* Tableau des équipes */}
-      <div className="overflow-x-auto">
+      <div className="min-h-0 flex-1 overflow-scroll">
         <table className="w-full text-xs">
           <thead>
             <tr className="text-left text-[10px] text-slate-500 uppercase tracking-wider border-b border-[#1e293b]">
@@ -173,7 +173,7 @@ export default function AdminEquipesPage() {
           <tbody>
             {equipes.map((eq) => (
               <tr key={eq.id} className="border-b border-[#0f172a] hover:bg-[#0a0f1a] transition">
-                <td className="py-3 pr-4 text-emerald-400 font-medium">{eq.nomRobot}</td>
+                <td className="py-3 pr-4 text-[#B1D8E9] font-medium">{eq.nomRobot}</td>
                 <td className="py-3 pr-4 text-slate-300">{eq.nomEquipe}</td>
                 <td className="py-3 pr-4 text-slate-300">{eq.prenom} {eq.nom}</td>
                 <td className="py-3 pr-4 text-slate-400">{eq.email}</td>
@@ -192,11 +192,10 @@ export default function AdminEquipesPage() {
             ))}
           </tbody>
         </table>
+        {equipes.length === 0 && (
+          <p className="text-center text-slate-500 text-xs mt-8">Aucune équipe inscrite.</p>
+        )}
       </div>
-
-      {equipes.length === 0 && (
-        <p className="text-center text-slate-500 text-xs mt-8">Aucune équipe inscrite.</p>
-      )}
     </div>
   );
 }
@@ -211,7 +210,7 @@ function Input({ label, value, onChange, type = "text" }: {
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded focus:border-emerald-600 outline-none"
+        className="w-full px-3 py-2 text-xs bg-[#020617] border border-[#1e293b] text-slate-200 rounded focus:border-[#B1D8E9] outline-none"
         required={label.includes("*")}
       />
     </div>

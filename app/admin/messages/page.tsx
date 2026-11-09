@@ -75,7 +75,7 @@ export default function AdminMessagesPage() {
     <div className="min-h-screen bg-[#020617] p-6 text-xs text-slate-300">
       {/* En-tête, dans le même style que les autres pages admin */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-sm font-bold text-[#22c55e] uppercase tracking-widest">Admin · Messages</h1>
+        <h1 className="text-sm font-bold text-[#CE9DE5] uppercase tracking-widest">Admin · Messages</h1>
         <div className="flex gap-3">
           <Link href="/admin/equipes" className="px-4 py-2 bg-[#1e293b] hover:bg-[#334155] rounded transition">Équipes</Link>
           <Link href="/" className="px-4 py-2 bg-[#1e293b] hover:bg-[#334155] rounded transition">← Site public</Link>
@@ -89,7 +89,7 @@ export default function AdminMessagesPage() {
             <li key={courriel}>
               <button
                 onClick={() => setCourrielChoisi(courriel)}
-                className={`w-full text-left px-3 py-2 rounded ${courriel === courrielChoisi ? "bg-[#1e293b] text-[#22c55e]" : "hover:bg-[#0a0f1a]"}`}
+                className={`w-full text-left px-3 py-2 rounded ${courriel === courrielChoisi ? "bg-[#1e293b] text-[#B1D8E9]" : "hover:bg-[#0a0f1a]"}`}
               >
                 <strong className="block">{nom}</strong>
                 <span className="opacity-60">{courriel}</span>
@@ -109,7 +109,7 @@ export default function AdminMessagesPage() {
                 {fil.map((m) => (
                   // Réponses du club à droite, messages du visiteur à gauche
                   <li key={m.id} className={m.auteur === "club" ? "flex justify-end" : "flex"}>
-                    <div className={`max-w-[75%] rounded-lg px-3 py-2 ${m.auteur === "club" ? "bg-[#166534]" : "bg-[#1f2937]"}`}>
+                    <div className={`max-w-[75%] rounded-lg px-3 py-2 ${m.auteur === "club" ? "bg-[#46324F]" : "bg-[#1f2937]"}`}>
                       <p>{m.texte}</p>
                       <time className="block text-[10px] opacity-60">{formaterHeure(m.created_at)}</time>
                     </div>
@@ -125,9 +125,9 @@ export default function AdminMessagesPage() {
                   placeholder="Répondre…"
                   value={reponse}
                   onChange={(e) => setReponse(e.target.value)}
-                  className="min-w-0 flex-1 rounded bg-[#020617] border border-[#1e293b] px-3 py-2 outline-none focus:border-emerald-600"
+                  className="min-w-0 flex-1 rounded bg-[#020617] border border-[#1e293b] px-3 py-2 outline-none focus:border-[#B1D8E9]"
                 />
-                <button type="submit" className="shrink-0 px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500 text-white">
+                <button type="submit" className="shrink-0 px-4 py-2 rounded bg-[#CE9DE5] hover:bg-[#B1D8E9] text-[#020617]">
                   Répondre
                 </button>
               </form>

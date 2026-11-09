@@ -153,7 +153,7 @@ export default function AdminBracketPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-sm font-bold text-[#22c55e] uppercase tracking-widest">Admin · Double Élimination</h1>
+          <h1 className="text-sm font-bold text-[#B1D8E9] uppercase tracking-widest">Admin · Double Élimination</h1>
           <p className="text-[10px] text-slate-500 mt-0.5">Cliquez sur une équipe pour la désigner vainqueure (recliquez pour annuler)</p>
         </div>
         <div className="flex gap-3">
@@ -168,7 +168,7 @@ export default function AdminBracketPage() {
       <div className="bracket-scroll">
         {/* ── Winners Bracket ── */}
         <div className="mb-8">
-          <h2 className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-2">Winners Bracket</h2>
+          <h2 className="text-xs font-bold text-[#B1D8E9] uppercase tracking-widest mb-2">Winners Bracket</h2>
           <div style={{ display: "flex", paddingLeft: PAD, marginBottom: 6 }}>
             {wbLabels.map((l, r) => (
               <div key={r} className="bracket-round-label" style={{ width: CARD_W, marginRight: r < wbLabels.length - 1 ? R_GAP - CARD_W : 0, flexShrink: 0 }}>{l}</div>
@@ -189,7 +189,7 @@ export default function AdminBracketPage() {
         {/* ── Losers Bracket ── */}
         {hasLB && (
           <div className="mb-8">
-            <h2 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-2">Losers Bracket</h2>
+            <h2 className="text-xs font-bold text-[#B1D8E9] uppercase tracking-widest mb-2">Losers Bracket</h2>
             <div style={{ display: "flex", paddingLeft: PAD, marginBottom: 6 }}>
               {lbLabels.map((l, r) => (
                 <div key={r} className="bracket-round-label" style={{ width: CARD_W, marginRight: r < lbLabels.length - 1 ? R_GAP - CARD_W : 0, flexShrink: 0 }}>{l}</div>
@@ -210,7 +210,7 @@ export default function AdminBracketPage() {
 
         {/* ── Grande Finale + Champion ── */}
         <div className="mb-8">
-          <h2 className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">Grande Finale</h2>
+          <h2 className="text-xs font-bold text-[#B1D8E9] uppercase tracking-widest mb-2">Grande Finale</h2>
           <div style={{ display: "flex", alignItems: "center" }}>
             <div>
               <div className="bracket-round-label" style={{ width: CARD_W, marginBottom: 6 }}>Finale</div>
