@@ -99,6 +99,16 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "ID requis." }, { status: 400 });
     }
 
+    const result = await sql`
+      DELETE FROM inscriptions
+      WHERE id = ${id}
+      RETURNING id
+    `;
+
+    if (result.length === 0) {
+      return NextResponse.json({ error: "Inscription introuvable." }, { status: 404 });
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     if (process.env.NODE_ENV !== "production") console.error("Erreur suppression:", error);
