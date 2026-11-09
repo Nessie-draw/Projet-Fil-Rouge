@@ -2,8 +2,9 @@
 // Espace admin : lire les conversations des visiteurs et leur répondre
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { listenForMessageSoundUnlock, playMessageSound } from "../../lib/messageSound";
 
 type Message = {
   id: number;
@@ -24,6 +25,9 @@ export default function AdminMessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [courrielChoisi, setCourrielChoisi] = useState("");
   const [reponse, setReponse] = useState("");
+  const dernierMessageId = useRef(0);
+  const premierChargement = useRef(true);
+  const messagesListRef = useRef<HTMLOListElement | null>(null);
 
   // Charge tous les messages ; si on n'est pas connecté, retour à la page de connexion
   async function chargerMessages() {
@@ -32,24 +36,62 @@ export default function AdminMessagesPage() {
       window.location.href = "/admin/login";
       return;
     }
-    if (res.ok) setMessages(await res.json());
+    if (!res.ok) return;
+
+    const nouveauxMessages: Message[] = await res.json();
+    if (premierChargement.current) {
+      premierChargement.current = false;
+    } else if (
+      nouveauxMessages.some(
+        (message) => message.id > dernierMessageId.current && message.auteur === "visiteur",
+      )
+    ) {
+      playMessageSound();
+    }
+
+    dernierMessageId.current = Math.max(
+      dernierMessageId.current,
+      ...nouveauxMessages.map((message) => message.id),
+    );
+    setMessages(nouveauxMessages);
   }
 
   // Au chargement, puis toutes les 5 secondes pour voir les nouveaux messages
   useEffect(() => {
-    void chargerMessages();
+    const stopListeningForUnlock = listenForMessageSoundUnlock();
+    const premierChargementTimeout = window.setTimeout(() => void chargerMessages(), 0);
     const intervalle = setInterval(chargerMessages, 5000);
-    return () => clearInterval(intervalle);
+    return () => {
+      window.clearTimeout(premierChargementTimeout);
+      clearInterval(intervalle);
+      stopListeningForUnlock();
+    };
   }, []);
 
   // Une conversation par courriel de visiteur (avec le nom du visiteur)
-  const conversations = new Map<string, string>();
+  const conversations = new Map<string, { nom: string; dernierEnvoi: string }>();
   messages.forEach((m) => {
-    if (m.auteur === "visiteur") conversations.set(m.courriel, m.nom);
+    const conversation = conversations.get(m.courriel);
+    if (m.auteur === "visiteur") {
+      conversations.set(m.courriel, {
+        nom: m.nom,
+        dernierEnvoi: conversation && conversation.dernierEnvoi > m.created_at ? conversation.dernierEnvoi : m.created_at,
+      });
+    } else if (conversation && m.created_at > conversation.dernierEnvoi) {
+      conversation.dernierEnvoi = m.created_at;
+    }
   });
+  const conversationsTriees = [...conversations].sort((a, b) => b[1].dernierEnvoi.localeCompare(a[1].dernierEnvoi));
 
   // Messages de la conversation ouverte
   const fil = messages.filter((m) => m.courriel === courrielChoisi);
+  const dernierMessageDuFil = fil[fil.length - 1]?.id;
+
+  useEffect(() => {
+    const liste = messagesListRef.current;
+    if (!courrielChoisi || !liste) return;
+    liste.scrollTo({ top: liste.scrollHeight, behavior: "smooth" });
+  }, [courrielChoisi, dernierMessageDuFil]);
 
   // Envoi de la réponse du club
   async function envoyerReponse(e: React.FormEvent) {
@@ -78,6 +120,7 @@ export default function AdminMessagesPage() {
         <h1 className="text-sm font-bold text-[#CE9DE5] uppercase tracking-widest">Admin · Messages</h1>
         <div className="flex gap-3">
           <Link href="/admin/equipes" className="px-4 py-2 bg-[#1e293b] hover:bg-[#334155] rounded transition">Équipes</Link>
+          <Link href="/admin/bracket" className="px-4 py-2 bg-[#1e293b] hover:bg-[#334155] rounded transition">Bracket</Link>
           <Link href="/" className="px-4 py-2 bg-[#1e293b] hover:bg-[#334155] rounded transition">← Site public</Link>
         </div>
       </div>
@@ -85,13 +128,13 @@ export default function AdminMessagesPage() {
       <div className="flex gap-4">
         {/* Liste des visiteurs qui ont écrit */}
         <ul className="w-64 shrink-0 space-y-1">
-          {[...conversations].map(([courriel, nom]) => (
+          {conversationsTriees.map(([courriel, conversation]) => (
             <li key={courriel}>
               <button
                 onClick={() => setCourrielChoisi(courriel)}
                 className={`w-full text-left px-3 py-2 rounded ${courriel === courrielChoisi ? "bg-[#1e293b] text-[#B1D8E9]" : "hover:bg-[#0a0f1a]"}`}
               >
-                <strong className="block">{nom}</strong>
+                <strong className="block">{conversation.nom}</strong>
                 <span className="opacity-60">{courriel}</span>
               </button>
             </li>
@@ -105,7 +148,7 @@ export default function AdminMessagesPage() {
             <p className="opacity-60">Choisissez une conversation à gauche.</p>
           ) : (
             <>
-              <ol className="space-y-2 mb-4 max-h-96 overflow-y-auto">
+              <ol ref={messagesListRef} className="space-y-2 mb-4 max-h-96 overflow-y-auto">
                 {fil.map((m) => (
                   // Réponses du club à droite, messages du visiteur à gauche
                   <li key={m.id} className={m.auteur === "club" ? "flex justify-end" : "flex"}>

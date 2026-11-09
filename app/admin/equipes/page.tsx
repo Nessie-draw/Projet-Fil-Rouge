@@ -116,6 +116,7 @@ export default function AdminEquipesPage() {
             {showForm ? "Annuler" : "+ Ajouter"}
           </button>
           <Link href="/admin/bracket" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">Bracket</Link>
+          <Link href="/admin/messages" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">Messages</Link>
           <Link href="/" className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-300 rounded-none transition">← Site public</Link>
           <button onClick={handleLogout} className="px-4 py-2 text-xs bg-[#1e293b] hover:bg-[#334155] text-slate-400 hover:text-red-400 rounded-none transition">Déconnexion</button>
         </div>

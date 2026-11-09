@@ -9,6 +9,7 @@ import {
   type WindowState,
 } from "./components/DraggableWindow";
 import { WindowContent } from "./components/windowContent";
+import { createArcadeToneWavDataUrl, getToggleToneDataUrl, listenForMessageSoundUnlock, playMessageSound } from "./lib/messageSound";
 
 function useIsMobile(breakpoint = 768) {
   return useSyncExternalStore(
@@ -57,119 +58,6 @@ function isWindowState(value: unknown): value is WindowState {
     typeof value.z === "number" &&
     Number.isFinite(value.z)
   );
-}
-
-type ToneSegment = {
-  freqStart: number;
-  freqEnd: number;
-  durationMs: number;
-  gain: number;
-  wave?: "pulse" | "triangle";
-  duty?: number;
-};
-
-function toBase64(bytes: Uint8Array) {
-  let binary = "";
-  const chunkSize = 0x8000;
-
-  for (let index = 0; index < bytes.length; index += chunkSize) {
-    const chunk = bytes.subarray(index, index + chunkSize);
-    binary += String.fromCharCode(...chunk);
-  }
-
-  return btoa(binary);
-}
-
-function createArcadeToneWavDataUrl(segments: ToneSegment[]) {
-  const safeSegments =
-    segments.length > 0
-      ? segments
-      : [{ freqStart: 523, freqEnd: 523, durationMs: 45, gain: 0.8, wave: "pulse" as const, duty: 0.25 }] as ToneSegment[];
-
-  const sampleRate = 11025;
-  const sampleCount = safeSegments.reduce((total, segment) => {
-    const durationSamples = Math.max(
-      1,
-      Math.floor((sampleRate * segment.durationMs) / 1000),
-    );
-    return total + durationSamples;
-  }, 0);
-
-  const byteRate = sampleRate * 2;
-  const dataSize = sampleCount * 2;
-
-  const bytes = new Uint8Array(44 + dataSize);
-  const view = new DataView(bytes.buffer);
-
-  const writeAscii = (offset: number, text: string) => {
-    for (let i = 0; i < text.length; i++) {
-      view.setUint8(offset + i, text.charCodeAt(i));
-    }
-  };
-
-  writeAscii(0, "RIFF");
-  view.setUint32(4, 36 + dataSize, true);
-  writeAscii(8, "WAVE");
-  writeAscii(12, "fmt ");
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, 1, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, byteRate, true);
-  view.setUint16(32, 2, true);
-  view.setUint16(34, 16, true);
-  writeAscii(36, "data");
-  view.setUint32(40, dataSize, true);
-
-  let globalSampleIndex = 0;
-  const amplitude = 0.3 * 32767;
-
-  safeSegments.forEach((segment) => {
-    const segmentSamples = Math.max(
-      1,
-      Math.floor((sampleRate * segment.durationMs) / 1000),
-    );
-    const attackSamples = Math.max(1, Math.floor(segmentSamples * 0.08));
-    const releaseSamples = Math.max(1, Math.floor(segmentSamples * 0.18));
-    const duty = Math.min(0.9, Math.max(0.1, segment.duty ?? 0.25));
-
-    for (let localIndex = 0; localIndex < segmentSamples; localIndex++) {
-      const progress =
-        segmentSamples > 1 ? localIndex / (segmentSamples - 1) : 1;
-      const frequency =
-        segment.freqStart + (segment.freqEnd - segment.freqStart) * progress;
-      const localTime = localIndex / sampleRate;
-
-      let envelope = segment.gain;
-      if (localIndex < attackSamples) {
-        envelope *= localIndex / attackSamples;
-      } else if (localIndex >= segmentSamples - releaseSamples) {
-        envelope *= (segmentSamples - localIndex - 1) / releaseSamples;
-      }
-
-      const phase = ((localIndex * frequency) / sampleRate) % 1;
-      let sample =
-        segment.wave === "triangle"
-          ? 1 - 4 * Math.abs(phase - 0.5)
-          : phase < duty
-            ? 1
-            : -1;
-
-      const sub = Math.sin(2 * Math.PI * (frequency * 0.5) * localTime);
-      const tremolo = 0.9 + 0.1 * Math.sin(2 * Math.PI * 24 * localTime);
-      sample = (sample * 0.88 + sub * 0.12) * tremolo;
-
-      const bitDepthSteps = 14;
-      sample = Math.round(sample * bitDepthSteps) / bitDepthSteps;
-
-      const sampleValue = Math.floor(sample * envelope * amplitude);
-      view.setInt16(44 + globalSampleIndex * 2, sampleValue, true);
-
-      globalSampleIndex += 1;
-    }
-  });
-
-  return `data:audio/wav;base64,${toBase64(bytes)}`;
 }
 
 function SocialIcon({ href, label, isDark, imgDark, imgLight, imgClicking }: {
@@ -229,6 +117,51 @@ export default function Bureau() {
   }, []);
 
   useEffect(() => {
+    return listenForMessageSoundUnlock();
+  }, []);
+
+  useEffect(() => {
+    if (!preferencesLoaded) return;
+
+    let courrielActuel = "";
+    let dernierId = 0;
+    let historiqueCharge = false;
+
+    const verifierMessages = async () => {
+      try {
+        const visiteur = JSON.parse(localStorage.getItem("chat-visiteur") || "null");
+        const courriel = typeof visiteur?.courriel === "string" ? visiteur.courriel.trim() : "";
+        if (!courriel) return;
+        if (courriel !== courrielActuel) {
+          courrielActuel = courriel;
+          historiqueCharge = false;
+        }
+
+        const response = await fetch(`/api/messages?courriel=${encodeURIComponent(courriel)}`);
+        if (!response.ok) return;
+        const messages: { id: number; auteur: string }[] = await response.json();
+        if (!historiqueCharge) {
+          dernierId = Math.max(0, ...messages.map((message) => message.id));
+          historiqueCharge = true;
+          return;
+        }
+
+        const nouvelleReponse = messages.some(
+          (message) => message.id > dernierId && message.auteur === "club",
+        );
+        dernierId = Math.max(dernierId, ...messages.map((message) => message.id));
+        if (nouvelleReponse) playMessageSound();
+      } catch {
+        // Ignore unavailable storage and transient polling failures.
+      }
+    };
+
+    void verifierMessages();
+    const intervalle = window.setInterval(() => void verifierMessages(), 5000);
+    return () => window.clearInterval(intervalle);
+  }, [preferencesLoaded]);
+
+  useEffect(() => {
     if (!preferencesLoaded) return;
 
     try {
@@ -285,11 +218,7 @@ export default function Bureau() {
         { freqStart: 523, freqEnd: 523, durationMs: 44, gain: 0.82, wave: "triangle" },
         { freqStart: 392, freqEnd: 350, durationMs: 62, gain: 0.75, wave: "pulse", duty: 0.28 },
       ]),
-      toggle: createArcadeToneWavDataUrl([
-        { freqStart: 740, freqEnd: 740, durationMs: 24, gain: 0.84, wave: "pulse", duty: 0.2 },
-        { freqStart: 988, freqEnd: 988, durationMs: 24, gain: 0.8, wave: "pulse", duty: 0.2 },
-        { freqStart: 740, freqEnd: 680, durationMs: 34, gain: 0.72, wave: "triangle" },
-      ]),
+      toggle: getToggleToneDataUrl(),
     }),
     [],
   );
